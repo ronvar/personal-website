@@ -32,19 +32,19 @@ const useStyles = createStyles(() => ({
 const skillCategories = [
   {
     title: 'Frontend',
-    skills: ['React', 'Next.js', 'TypeScript', 'JavaScript', 'HTML/CSS', 'Tailwind CSS', 'Redux', 'GraphQL'],
+    skills: ['React', 'Next.js', 'TypeScript', 'JavaScript', 'HTML/CSS', 'Tailwind CSS', 'Redux', 'MantineUI', 'ChakraUI', 'Chart.js'],
   },
   {
     title: 'Backend',
-    skills: ['Node.js', 'Python', 'Express', 'FastAPI', 'REST APIs', 'PostgreSQL', 'MongoDB', 'Redis'],
+    skills: ['Node.js', 'Python', 'C++', 'Express', 'FastAPI', 'REST APIs', 'PostgreSQL', 'MongoDB', 'Redis'],
   },
   {
     title: 'DevOps & Cloud',
-    skills: ['AWS', 'Docker', 'Kubernetes', 'CI/CD', 'Terraform', 'GitHub Actions', 'Vercel', 'Cloudflare'],
+    skills: ['AWS', 'S3', 'SQS', 'SNS', 'Docker', 'Kubernetes', 'CI/CD', 'GitHub Actions', 'Cloudflare', 'R2', 'Firestore'],
   },
   {
     title: 'Tools & Methods',
-    skills: ['Git', 'Agile/Scrum', 'Jest', 'Cypress', 'Figma', 'Linear', 'Datadog', 'Sentry'],
+    skills: ['Git', 'Agile/Scrum', 'Vitest', 'Playwright', 'Figma', 'Linear', 'Datadog', 'Sentry'],
   },
 ];
 
