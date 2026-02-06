@@ -84,10 +84,11 @@ const useStyles = createStyles((_, { devMode, isScrolled, colorScheme }: StylePa
 }));
 
 const navItems = [
-  { label: 'About', href: '#about' },
-  { label: 'Skills', href: '#skills' },
-  { label: 'Work', href: '#work' },
-  { label: 'Experience', href: '#experience' },
+  { label: 'About', href: '#about', devLabel: '/about' },
+  { label: 'About Me', href: '#about-me', devLabel: '/about-me' },
+  { label: 'Skills', href: '#skills', devLabel: '/skills' },
+  { label: 'Work', href: '#work', devLabel: '/work' },
+  { label: 'Experience', href: '#experience', devLabel: '/experience' },
 ];
 
 export function Navbar() {
@@ -139,8 +140,14 @@ export function Navbar() {
           <UnstyledButton
             onClick={() => handleNavClick('#about')}
             className={classes.logo}
+            style={{ position: 'relative' }}
           >
-            {devMode ? '>_RV' : 'RV'}
+            {devMode && (
+              <span style={{ position: 'absolute', right: '100%', marginRight: 2 }}>
+                &gt;_
+              </span>
+            )}
+            RV
           </UnstyledButton>
 
           {/* Developer Mode Toggle */}
@@ -178,7 +185,7 @@ export function Navbar() {
                   : classes.navItemInactive
               )}
             >
-              {devMode ? `/${item.label.toLowerCase()}` : item.label}
+              {devMode ? item.devLabel : item.label}
             </UnstyledButton>
           ))}
 
