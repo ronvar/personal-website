@@ -136,7 +136,7 @@ export function AboutMe() {
                   </ThemeIcon>
                   <Text fw={600} size="lg" mb="xs">Home Automation</Text>
                   <Text c="dimmed" size="sm" style={{ lineHeight: 1.6 }}>
-                    I utomated my personal Plex media server. It's set up to listen for commands via Signal, automatically handle downloads, torrenting, and content streaming via Plex.
+                    I automated my personal Plex media server. It's set up to listen for commands via Signal, automatically handle downloads, torrenting, and content streaming via Plex.
                   </Text>
                 </Paper>
               </FadeIn>
