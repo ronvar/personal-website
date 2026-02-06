@@ -135,45 +135,79 @@ export function Navbar() {
 
   return (
     <Box component="nav" className={classes.nav}>
-      <Group justify="space-between" maw={1200} mx="auto">
-        <Group gap="md">
-          <UnstyledButton
-            onClick={() => handleNavClick('#about')}
-            className={classes.logo}
-            style={{ position: 'relative' }}
-          >
-            {devMode && (
-              <span style={{ position: 'absolute', right: '100%', marginRight: 2 }}>
-                &gt;_
-              </span>
-            )}
-            RV
-          </UnstyledButton>
+      <Box maw={1200} mx="auto">
+        <Group justify="space-between" align="center" mb={0}>
+          <Group gap="md">
+            <UnstyledButton
+              onClick={() => handleNavClick('#about')}
+              className={classes.logo}
+              style={{ position: 'relative' }}
+            >
+              {devMode && (
+                <span style={{ position: 'absolute', right: '100%', marginRight: 2 }}>
+                  &gt;_
+                </span>
+              )}
+              RV
+            </UnstyledButton>
 
-          {/* Developer Mode Toggle */}
-          <Group gap={6} className={classes.devToggleGroup}>
-            <IconTerminal2 size={16} className={classes.devIcon} />
-            <Text size="xs" fw={500} className={classes.devLabel}>
-              hacker mode
-            </Text>
-            <Switch
-              size="xs"
-              checked={devMode}
-              onChange={handleDevModeChange}
-              styles={{
-                track: {
-                  backgroundColor: devMode ? '#00ff00' : undefined,
-                  borderColor: devMode ? '#00ff00' : undefined,
-                },
-                thumb: {
-                  backgroundColor: devMode ? '#000' : undefined,
-                },
-              }}
-            />
+            {/* Developer Mode Toggle */}
+            <Group gap={6} className={classes.devToggleGroup}>
+              <IconTerminal2 size={16} className={classes.devIcon} />
+              <Text size="xs" fw={500} className={classes.devLabel}>
+                hacker mode
+              </Text>
+              <Switch
+                size="xs"
+                checked={devMode}
+                onChange={handleDevModeChange}
+                styles={{
+                  track: {
+                    backgroundColor: devMode ? '#00ff00' : undefined,
+                    borderColor: devMode ? '#00ff00' : undefined,
+                  },
+                  thumb: {
+                    backgroundColor: devMode ? '#000' : undefined,
+                  },
+                }}
+              />
+            </Group>
+          </Group>
+
+          <Group gap="xs">
+            {/* Desktop Nav Items */}
+            <Group gap="xs" visibleFrom="sm">
+              {navItems.map((item) => (
+                <UnstyledButton
+                  key={item.href}
+                  onClick={() => handleNavClick(item.href)}
+                  className={cx(
+                    classes.navItem,
+                    activeSection === item.href.substring(1)
+                      ? classes.navItemActive
+                      : classes.navItemInactive
+                  )}
+                >
+                  {devMode ? item.devLabel : item.label}
+                </UnstyledButton>
+              ))}
+            </Group>
+
+            <ActionIcon
+              variant="subtle"
+              size="lg"
+              radius="xl"
+              onClick={handleColorSchemeToggle}
+              aria-label="Toggle color scheme"
+              className={classes.colorSchemeToggle}
+            >
+              {colorScheme === 'dark' ? <IconSun size={20} /> : <IconMoon size={20} />}
+            </ActionIcon>
           </Group>
         </Group>
 
-        <Group gap="xs">
+        {/* Mobile Nav Items - Second Row */}
+        <Group gap="xs" hiddenFrom="sm" mt="sm" justify="space-between" style={{ overflowX: 'auto', flexWrap: 'nowrap' }}>
           {navItems.map((item) => (
             <UnstyledButton
               key={item.href}
@@ -184,23 +218,13 @@ export function Navbar() {
                   ? classes.navItemActive
                   : classes.navItemInactive
               )}
+              style={{ flexShrink: 0 }}
             >
               {devMode ? item.devLabel : item.label}
             </UnstyledButton>
           ))}
-
-          <ActionIcon
-            variant="subtle"
-            size="lg"
-            radius="xl"
-            onClick={handleColorSchemeToggle}
-            aria-label="Toggle color scheme"
-            className={classes.colorSchemeToggle}
-          >
-            {colorScheme === 'dark' ? <IconSun size={20} /> : <IconMoon size={20} />}
-          </ActionIcon>
         </Group>
-      </Group>
+      </Box>
     </Box>
   );
 }
