@@ -132,7 +132,10 @@ const useStyles = createStyles(() => ({
 }));
 
 const funFacts = [
-  "",
+  "I knew I wanted to get into technology when I was gifted an iPod Nano in 2007.",
+  "I firmly believe Windows Phone was too ahead for its time.",
+  "I have a collection of over 200 Blu Ray movies",
+  "I have 3 sphinx cats and 2 of them are dwarves",
 ];
 
 const hackermanCodeBlocks = [
@@ -238,7 +241,7 @@ export function Terminal() {
   const { classes } = useStyles();
   const { devMode, setDevMode } = useDevMode();
   const [input, setInput] = useState('');
-  const [history, setHistory] = useState<string[]>([welcomeMessage]);
+  const [history, setHistory] = useState<string[]>([welcomeMessage, helpMessage]);
   const [isHackermanMode, setIsHackermanMode] = useState(false);
   const [hackermanBuffer, setHackermanBuffer] = useState('');
   const [hackermanFullCode, setHackermanFullCode] = useState('');
