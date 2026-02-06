@@ -15,8 +15,15 @@ export const metadata: Metadata = {
   authors: [{ name: "Ronald Vargas" }],
   openGraph: {
     title: "Ronald Vargas | Full Stack Software Engineer",
-    description: "Full Stack Software Engineer specializing in React, Next.js, TypeScript, and cloud technologies.",
+    description: "Full Stack Software Engineer specializing in React, TypeScript, Express, SQL and AWS services.",
     type: "website",
+    images: ["/img/meta.png"],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Ronald Vargas | Full Stack Software Engineer",
+    description: "Full Stack Software Engineer specializing in React, TypeScript, Express, SQL and AWS services.",
+    images: ["/img/meta.png"],
   },
 };
 
