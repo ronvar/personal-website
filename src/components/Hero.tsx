@@ -1,14 +1,17 @@
 'use client';
 
 import { useState, useRef } from 'react';
-import { Box, Title, Text, Group, ActionIcon, Tooltip, Container } from '@mantine/core';
+import { Box, Title, Text, Group, ActionIcon, Tooltip, Container, Switch } from '@mantine/core';
 import { IconBrandGithub, IconBrandLinkedin, IconMail } from '@tabler/icons-react';
 import { FadeIn } from './FadeIn';
+import { useDevMode } from './DevModeContext';
+import { BackgroundAnimation } from './BackgroundAnimation';
 
 export function Hero() {
-  const [clickCount, setClickCount] = useState(0);
+  const [, setClickCount] = useState(0);
   const [showTooltip, setShowTooltip] = useState(false);
   const clickTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const { devMode } = useDevMode();
 
   const handleNameClick = () => {
     setClickCount((prev) => {
@@ -42,9 +45,14 @@ export function Hero() {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
+        position: 'relative',
+        overflow: 'hidden',
       }}
     >
-      <Container size="md" style={{ textAlign: 'center' }}>
+      <BackgroundAnimation devMode={devMode} />
+      <Container size="md" style={{ textAlign: 'center', position: 'relative', zIndex: 1 }}>
+        <Group justify="flex-end" mb="xl">
+        </Group>
         <FadeIn>
           <Text
             size="sm"
@@ -60,7 +68,7 @@ export function Hero() {
 
         <FadeIn delay={100}>
           <Tooltip
-            label="Yes, I also fix my own cars"
+            label="Nice, you found one of my easter eggs!"
             opened={showTooltip}
             position="bottom"
             withArrow

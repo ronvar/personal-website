@@ -1,7 +1,7 @@
 'use client';
 
 import { useCallback } from 'react';
-import { Box, Title, Text, Badge, Group, Container, SimpleGrid, Paper } from '@mantine/core';
+import { Box, Title, Text, Badge, Group, Container, SimpleGrid, Paper, useMantineColorScheme } from '@mantine/core';
 import { createStyles } from '@mantine/emotion';
 import { FadeIn } from './FadeIn';
 
@@ -15,13 +15,14 @@ const useStyles = createStyles(() => ({
   grid: {
     alignItems: 'stretch',
   },
-  fadeInWrapper: {
-    height: '100%',
-  },
-  paper: {
-    backgroundColor: 'var(--gray-100)',
+  glassCard: {
     border: '1px solid var(--gray-200)',
+    backdropFilter: 'blur(16px) saturate(160%)',
+    WebkitBackdropFilter: 'blur(16px) saturate(160%)',
+    boxShadow: '0 24px 48px rgba(0, 0, 0, 0.08)',
     height: '100%',
+    display: 'flex',
+    flexDirection: 'column',
   },
   badge: {
     textTransform: 'none',
@@ -49,11 +50,13 @@ const skillCategories = [
 ];
 
 export function Skills() {
-  const { classes } = useStyles();
+  const { classes, cx } = useStyles();
+  const { colorScheme } = useMantineColorScheme();
+  const cardBackgroundColor = colorScheme === 'dark' ? 'rgba(29, 29, 31, 0.72)' : 'rgba(255, 255, 255, 0.72)';
 
   const renderSkillCategory = useCallback((category: typeof skillCategories[0], index: number) => (
     <FadeIn key={category.title} delay={index * 100} style={{ height: '100%' }}>
-      <Paper p="xl" radius="lg" className={classes.paper}>
+      <Paper p="xl" radius="xl" className={classes.glassCard} style={{ backgroundColor: cardBackgroundColor }}>
         <Text fw={600} size="lg" mb="md">
           {category.title}
         </Text>
@@ -73,7 +76,7 @@ export function Skills() {
         </Group>
       </Paper>
     </FadeIn>
-  ), [classes.paper, classes.badge]);
+  ), [classes.glassCard, classes.badge, cardBackgroundColor]);
 
   return (
     <Box component="section" id="skills" className={classes.section}>
