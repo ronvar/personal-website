@@ -1,82 +1,165 @@
-'use client';
+"use client";
 
-import { useCallback } from 'react';
-import { Box, Title, Text, Badge, Group, Container, SimpleGrid, Paper, useMantineColorScheme } from '@mantine/core';
-import { createStyles } from '@mantine/emotion';
-import { FadeIn } from './FadeIn';
+import { useCallback } from "react";
+import {
+  Box,
+  Title,
+  Text,
+  Badge,
+  Group,
+  Container,
+  SimpleGrid,
+  Paper,
+  useMantineColorScheme,
+} from "@mantine/core";
+import { createStyles } from "@mantine/emotion";
+import { FadeIn } from "./FadeIn";
 
 const useStyles = createStyles(() => ({
   section: {
-    backgroundColor: 'var(--background)',
+    backgroundColor: "var(--background)",
   },
   subtitle: {
-    letterSpacing: '0.1em',
+    letterSpacing: "0.1em",
   },
   grid: {
-    alignItems: 'stretch',
+    alignItems: "stretch",
   },
   glassCard: {
-    border: '1px solid var(--gray-200)',
-    backdropFilter: 'blur(16px) saturate(160%)',
-    WebkitBackdropFilter: 'blur(16px) saturate(160%)',
-    boxShadow: '0 24px 48px rgba(0, 0, 0, 0.08)',
-    height: '100%',
-    display: 'flex',
-    flexDirection: 'column',
+    border: "1px solid var(--gray-200)",
+    backdropFilter: "blur(16px) saturate(160%)",
+    WebkitBackdropFilter: "blur(16px) saturate(160%)",
+    boxShadow: "0 24px 48px rgba(0, 0, 0, 0.08)",
+    height: "100%",
+    display: "flex",
+    flexDirection: "column",
   },
   badge: {
-    textTransform: 'none',
+    textTransform: "none",
     fontWeight: 500,
   },
 }));
 
 const skillCategories = [
   {
-    title: 'Frontend',
-    skills: ['React', 'Next.js', 'TypeScript', 'HTML/CSS', 'Websockets', 'Dynamic.xyz', 'ethers.js', 'Redux', 'Jotai', 'MantineUI', 'Chart.js'],
+    title: "AI & Automation",
+    skills: [
+      "Claude Code",
+      "Cursor",
+      "Antigravity",
+      "AI-assisted development workflows",
+      "Internal tooling",
+      "Prompt/workflow",
+    ],
+  },
+
+  {
+    title: "Frontend",
+    skills: [
+      "React",
+      "Next.js",
+      "TypeScript",
+      "HTML/CSS",
+      "Websockets",
+      "Dynamic.xyz",
+      "ethers.js",
+      "Redux",
+      "Jotai",
+      "MantineUI",
+      "Chart.js",
+    ],
   },
   {
-    title: 'Backend',
-    skills: ['Node.js', 'Python', 'C++', 'JWT', 'Express', 'REST APIs', 'PostgreSQL', 'MongoDB', 'Redis', 'DB Encryption', 'XMTP'],
+    title: "Backend",
+    skills: [
+      "Node.js",
+      "Python",
+      "C++",
+      "JWT",
+      "Express",
+      "REST APIs",
+      "PostgreSQL",
+      "MongoDB",
+      "Redis",
+      "DB Encryption",
+      "XMTP",
+    ],
   },
   {
-    title: 'DevOps & Cloud',
-    skills: ['AWS', 'S3', 'SQS', 'SNS', 'Docker', 'CI/CD', 'GitHub Actions', 'Cloudflare', 'R2', 'Firestore'],
+    title: "DevOps & Cloud",
+    skills: [
+      "AWS",
+      "S3",
+      "SQS",
+      "SNS",
+      "Docker",
+      "CI/CD",
+      "GitHub Actions",
+      "Cloudflare",
+      "R2",
+      "Firestore",
+    ],
   },
   {
-    title: 'Tools & Methods',
-    skills: ['Git', 'Agile/Scrum', 'Vitest', 'Playwright', 'Figma', 'Linear', 'Replit', 'Datadog', 'Sentry', 'PagerDuty'],
+    title: "Tools & Methods",
+    skills: [
+      "Git",
+      "Agile/Scrum",
+      "Vitest",
+      "Playwright",
+      "Figma",
+      "Linear",
+      "Replit",
+      "Datadog",
+      "Sentry",
+      "PagerDuty",
+    ],
   },
 ];
 
 export function Skills() {
   const { classes, cx } = useStyles();
   const { colorScheme } = useMantineColorScheme();
-  const cardBackgroundColor = colorScheme === 'dark' ? 'rgba(29, 29, 31, 0.72)' : 'rgba(255, 255, 255, 0.72)';
+  const cardBackgroundColor =
+    colorScheme === "dark"
+      ? "rgba(29, 29, 31, 0.72)"
+      : "rgba(255, 255, 255, 0.72)";
 
-  const renderSkillCategory = useCallback((category: typeof skillCategories[0], index: number) => (
-    <FadeIn key={category.title} delay={index * 100} style={{ height: '100%' }}>
-      <Paper p="xl" radius="xl" className={classes.glassCard} style={{ backgroundColor: cardBackgroundColor }}>
-        <Text fw={600} size="lg" mb="md">
-          {category.title}
-        </Text>
-        <Group gap="xs">
-          {category.skills.map((skill) => (
-            <Badge
-              key={skill}
-              variant="light"
-              color="blue"
-              size="lg"
-              radius="md"
-              className={classes.badge}
-            >
-              {skill}
-            </Badge>
-          ))}
-        </Group>
-      </Paper>
-    </FadeIn>
-  ), [classes.glassCard, classes.badge, cardBackgroundColor]);
+  const renderSkillCategory = useCallback(
+    (category: (typeof skillCategories)[0], index: number) => (
+      <FadeIn
+        key={category.title}
+        delay={index * 100}
+        style={{ height: "100%" }}
+      >
+        <Paper
+          p="xl"
+          radius="xl"
+          className={classes.glassCard}
+          style={{ backgroundColor: cardBackgroundColor }}
+        >
+          <Text fw={600} size="lg" mb="md">
+            {category.title}
+          </Text>
+          <Group gap="xs">
+            {category.skills.map((skill) => (
+              <Badge
+                key={skill}
+                variant="light"
+                color="blue"
+                size="lg"
+                radius="md"
+                className={classes.badge}
+              >
+                {skill}
+              </Badge>
+            ))}
+          </Group>
+        </Paper>
+      </FadeIn>
+    ),
+    [classes.glassCard, classes.badge, cardBackgroundColor],
+  );
 
   return (
     <Box component="section" id="skills" className={classes.section}>
@@ -97,7 +180,11 @@ export function Skills() {
           </Title>
         </FadeIn>
 
-        <SimpleGrid cols={{ base: 1, sm: 2 }} spacing="xl" className={classes.grid}>
+        <SimpleGrid
+          cols={{ base: 1, sm: 2 }}
+          spacing="xl"
+          className={classes.grid}
+        >
           {skillCategories.map(renderSkillCategory)}
         </SimpleGrid>
       </Container>
