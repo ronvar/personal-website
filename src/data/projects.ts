@@ -44,10 +44,10 @@ export const projects: Project[] = [
     coverUrl: 'https://media.licdn.com/dms/image/v2/D562DAQGb0aHLG6kY1g/profile-treasury-image-shrink_800_800/profile-treasury-image-shrink_800_800/0/1716490932799?e=1770962400&v=beta&t=ewzpI_p_zujz-7fFGFQoVlrAZpIYzYGXJs7smqn9Q18',
     hasModal: true,
     screenshots: [
-      'https://media.licdn.com/dms/image/v2/D562DAQGb0aHLG6kY1g/profile-treasury-image-shrink_800_800/profile-treasury-image-shrink_800_800/0/1716490932799?e=1770962400&v=beta&t=ewzpI_p_zujz-7fFGFQoVlrAZpIYzYGXJs7smqn9Q18',
-      'https://media.licdn.com/dms/image/v2/D562DAQHJqtss1lgVSg/profile-treasury-image-shrink_800_800/profile-treasury-image-shrink_800_800/0/1716490959112?e=1770962400&v=beta&t=0-KwhlKsrvpauh2orVS1sYElC0wdXvgZk2WMxpBpMoc',
-      'https://media.licdn.com/dms/image/v2/D562DAQGJRrBCFd6_ow/profile-treasury-image-shrink_800_800/profile-treasury-image-shrink_800_800/0/1716490916231?e=1770962400&v=beta&t=h2sDi6CDuw-lIOXAMZqGj7u7zhF3eEmFkjfmkLjDl1M',
-      'https://media.licdn.com/dms/image/v2/D562DAQHrZeH5t0l3zw/profile-treasury-image-shrink_800_800/profile-treasury-image-shrink_800_800/0/1716490836300?e=1770962400&v=beta&t=-S0V1i-oFT7oy44w1DVxeL-6Ce9HkTpBLSWxHziG2Ks',
+      "/img/bello/bello-wallets.png",
+      "/img/bello/bello-heatmap.png",
+      "/img/bello/bello-charts.png",
+      "/img/bello/bello-avatars.png",
     ]
   },
 ];
