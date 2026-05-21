@@ -63,7 +63,7 @@ const useStyles = createStyles(() => ({
     backgroundColor: 'rgba(0, 0, 0, 0.9)',
     cursor: 'text',
   },
-  terminalContentHackerman: {
+  terminalContentCode: {
     padding: 16,
     height: 300,
     overflowY: 'auto',
@@ -90,7 +90,7 @@ const useStyles = createStyles(() => ({
     lineHeight: 1.6,
     color: '#ffbd2e',
   },
-  hackermanCode: {
+  developerCode: {
     color: '#00ff00',
     whiteSpace: 'pre-wrap',
     lineHeight: 1.4,
@@ -107,7 +107,7 @@ const useStyles = createStyles(() => ({
     '0%, 50%': { opacity: 1 },
     '51%, 100%': { opacity: 0 },
   },
-  hackermanArea: {
+  developerArea: {
     outline: 'none',
     minHeight: '100%',
   },
@@ -138,87 +138,192 @@ const funFacts = [
   "I have 3 sphinx cats and 2 of them are dwarves",
 ];
 
-const hackermanCodeBlocks = [
-  `async fn exploit_kernel_vuln(target: &mut KernelSpace) -> Result<RootShell, ExploitError> {
-    let payload = craft_rop_chain(0xdeadbeef, GADGET_BASE)?;
-    unsafe { std::ptr::write_volatile(target.syscall_table as *mut u64, payload.entry_point); }
-    trigger_race_condition(&target.spinlock, Duration::from_nanos(42))?;
-    Ok(RootShell::new(target.pid, Permissions::ALL))
-}`,
-  `def decrypt_aes256_gcm(ciphertext: bytes, key: bytes, nonce: bytes) -> bytes:
-    cipher = Cipher(algorithms.AES(key), modes.GCM(nonce), backend=default_backend())
-    decryptor = cipher.decryptor()
-    plaintext = decryptor.update(ciphertext[:-16]) + decryptor.finalize_with_tag(ciphertext[-16:])
-    return decompress(plaintext, wbits=-zlib.MAX_WBITS)`,
-  `const bypassCSP = async (origin: string): Promise<void> => {
-  const dangling = document.createElement('link');
-  dangling.rel = 'prefetch'; dangling.href = \`\${origin}/api/exfil?d=\${btoa(document.cookie)}\`;
-  const mutation = new MutationObserver(() => fetch(dangling.href, {mode:'no-cors',credentials:'include'}));
-  mutation.observe(document.body, { childList: true, subtree: true });
-};`,
-  `SELECT u.id, u.email, u.password_hash, u.ssn, u.credit_card
-FROM users u INNER JOIN admin_sessions s ON u.id = s.user_id
-WHERE s.token = '\${injectedToken}' OR 1=1--
-  AND u.role = 'superadmin'
-  UNION SELECT table_name,column_name,null,null,null FROM information_schema.columns;`,
-  `func (e *Exploit) OverflowHeap(buf []byte) error {
-    shellcode := []byte{0x48,0x31,0xc0,0x48,0x89,0xc2,0x48,0x89,0xc6,0x48,0x8d,0x3d,0x04,0x00}
-    copy(buf[unsafe.Sizeof(runtime.g{}):], shellcode)
-    return e.TriggerUAF((*runtime.g)(unsafe.Pointer(&buf[0])), 0x7fffffffe000)
-}`,
-  `#include <linux/module.h>
-static int __init rootkit_init(void) {
-    cr0 = read_cr0(); write_cr0(cr0 & ~0x00010000);
-    sys_call_table[__NR_getdents64] = (void*)hooked_getdents64;
-    list_del_init(&__this_module.list); // hide from lsmod
-    return 0;
-}`,
-  `class ZeroDayExploit:
-    def __init__(self, target_pid: int):
-        self.mem = open(f'/proc/{target_pid}/mem', 'rb+')
-        self.maps = self._parse_maps(target_pid)
-        self.libc_base = self._find_libc_base()
+const developerCodeBlocks = [
+  `type DeepReadonly<T> = T extends (infer U)[]
+  ? DeepReadonlyArray<U>
+  : T extends object
+  ? { readonly [K in keyof T]: DeepReadonly<T[K]> }
+  : T;
+interface DeepReadonlyArray<T> extends ReadonlyArray<DeepReadonly<T>> {}
 
-    def execute(self, cmd: str) -> bytes:
-        rop = p64(self.libc_base + 0x4f3d5)  # one_gadget
-        self.mem.seek(self.maps['stack'][0] + self.rsp_offset)
-        self.mem.write(rop + cmd.encode())
-        return self._wait_for_output()`,
-  `// Quantum-resistant key exchange with post-quantum lattice-based crypto
-impl KyberKEM {
-    pub fn encapsulate(&self, pk: &[u8; 1184]) -> ([u8; 1088], [u8; 32]) {
-        let m = sha3_256(&self.random_bytes(32));
-        let (K_bar, r) = self.g_hash(m, sha3_256(pk));
-        let ct = self.cpapke_enc(pk, m, r);
-        (ct, sha3_256(&[K_bar, sha3_256(&ct)].concat()))
+type UnwrapPromise<T> = T extends Promise<infer U> ? UnwrapPromise<U> : T;
+type PickByValue<T, V> = { [K in keyof T as T[K] extends V ? K : never]: T[K] };
+type Flatten<T extends unknown[]> = T extends [infer H, ...infer R]
+  ? H extends unknown[] ? [...H, ...Flatten<R>] : [H, ...Flatten<R>]
+  : [];`,
+  `async function* streamWithBackpressure<T>(
+  source: AsyncIterable<T>,
+  bufferSize: number
+): AsyncGenerator<T> {
+  const buffer: T[] = [];
+  let done = false;
+  const fill = async () => {
+    for await (const item of source) {
+      buffer.push(item);
+      if (buffer.length >= bufferSize) await new Promise(r => setTimeout(r, 0));
     }
-}`,
-  `void* mmap_rwx = mmap(NULL, 0x1000, PROT_READ|PROT_WRITE|PROT_EXEC, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0);
-memcpy(mmap_rwx, "\x48\x31\xff\x48\x31\xf6\x48\x31\xd2\x48\x31\xc0\xb0\x3b\x0f\x05", 16);
-((void(*)())mmap_rwx)(); // execve("/bin/sh", NULL, NULL)`,
-  `const forensicsBypass = {
-  clearTraces: () => {
-    Object.defineProperty(navigator, 'webdriver', {get: () => undefined});
-    delete window.cdc_adoQpoasnfa76pfcZLmcfl_Array;
-    window.chrome = { runtime: {}, loadTimes: () => {}, csi: () => {} };
-    Reflect.defineProperty(navigator, 'plugins', { get: () => [1,2,3,4,5] });
+    done = true;
+  };
+  void fill();
+  while (!done || buffer.length > 0) {
+    if (buffer.length === 0) await new Promise(r => setTimeout(r, 1));
+    else yield buffer.shift()!;
   }
-};`,
-  `BEGIN;
-  UPDATE accounts SET balance = balance + 999999.99 WHERE id = (
-    SELECT id FROM accounts WHERE routing_number = '021000021'
-    AND account_type = 'checking' LIMIT 1 FOR UPDATE SKIP LOCKED
-  );
-  INSERT INTO audit_log (action, timestamp, ip) VALUES ('TRANSFER', NOW() - INTERVAL '7 days', '127.0.0.1');
-COMMIT;`,
-  `namespace Malware {
-  [DllImport("kernel32.dll")] static extern IntPtr VirtualAlloc(IntPtr addr, uint size, uint type, uint protect);
-  [DllImport("kernel32.dll")] static extern IntPtr CreateThread(IntPtr attr, uint stack, IntPtr start, IntPtr param, uint flags, IntPtr id);
+}`,
+  `class EventEmitter<Events extends Record<string, unknown>> {
+  private listeners = new Map<keyof Events, Set<(payload: unknown) => void>>();
 
-  public static void Inject(byte[] shellcode) {
-    IntPtr addr = VirtualAlloc(IntPtr.Zero, (uint)shellcode.Length, 0x3000, 0x40);
-    Marshal.Copy(shellcode, 0, addr, shellcode.Length);
-    CreateThread(IntPtr.Zero, 0, addr, IntPtr.Zero, 0, IntPtr.Zero);
+  on<K extends keyof Events>(event: K, handler: (payload: Events[K]) => void): () => void {
+    if (!this.listeners.has(event)) this.listeners.set(event, new Set());
+    const set = this.listeners.get(event)!;
+    set.add(handler as (p: unknown) => void);
+    return () => set.delete(handler as (p: unknown) => void);
+  }
+
+  emit<K extends keyof Events>(event: K, payload: Events[K]): void {
+    this.listeners.get(event)?.forEach(h => h(payload));
+  }
+}`,
+  `function memoize<Args extends unknown[], R>(
+  fn: (...args: Args) => R,
+  keyFn: (...args: Args) => string = (...args) => JSON.stringify(args)
+): (...args: Args) => R {
+  const cache = new Map<string, R>();
+  return (...args: Args): R => {
+    const key = keyFn(...args);
+    if (cache.has(key)) return cache.get(key)!;
+    const result = fn(...args);
+    cache.set(key, result);
+    return result;
+  };
+}
+const fib = memoize((n: number): number => n <= 1 ? n : fib(n - 1) + fib(n - 2));`,
+  `type Result<T, E = Error> = { ok: true; value: T } | { ok: false; error: E };
+const Ok = <T>(value: T): Result<T> => ({ ok: true, value });
+const Err = <E>(error: E): Result<never, E> => ({ ok: false, error });
+
+async function fetchUser(id: string): Promise<Result<User>> {
+  try {
+    const res = await fetch(\`/api/users/\${id}\`);
+    if (!res.ok) return Err(new Error(\`HTTP \${res.status}\`));
+    return Ok(await res.json() as User);
+  } catch (e) {
+    return Err(e instanceof Error ? e : new Error(String(e)));
+  }
+}`,
+  `type Middleware<S> = (state: S, next: (state: S) => S) => S;
+function compose<S>(...middlewares: Middleware<S>[]): Middleware<S> {
+  return (state, next) =>
+    middlewares.reduceRight(
+      (acc, mw) => (s: S) => mw(s, acc),
+      next
+    )(state);
+}
+
+const logger: Middleware<AppState> = (state, next) => {
+  console.log('before:', state);
+  const result = next(state);
+  console.log('after:', result);
+  return result;
+};`,
+  `function useDebounce<T extends (...args: Parameters<T>) => ReturnType<T>>(
+  fn: T,
+  delay: number
+): [T, () => void] {
+  const timer = useRef<ReturnType<typeof setTimeout>>();
+  const debounced = useCallback(
+    (...args: Parameters<T>) => {
+      clearTimeout(timer.current);
+      timer.current = setTimeout(() => fn(...args), delay);
+    },
+    [fn, delay]
+  ) as T;
+  const flush = useCallback(() => clearTimeout(timer.current), []);
+  useEffect(() => () => clearTimeout(timer.current), []);
+  return [debounced, flush];
+}`,
+  `class ObservableMap<K, V> extends Map<K, V> {
+  private subscribers = new Set<(map: this) => void>();
+
+  subscribe(fn: (map: this) => void): () => void {
+    this.subscribers.add(fn);
+    return () => this.subscribers.delete(fn);
+  }
+
+  private notify() { this.subscribers.forEach(fn => fn(this)); }
+
+  override set(key: K, value: V): this {
+    super.set(key, value);
+    this.notify();
+    return this;
+  }
+  override delete(key: K): boolean {
+    const result = super.delete(key);
+    if (result) this.notify();
+    return result;
+  }
+}`,
+  `type Builder<T, Required extends keyof T = never> = {
+  [K in keyof T]-?: (value: T[K]) => Builder<T, Required | K>;
+} & (Required extends keyof T ? { build(): T } : object);
+
+function createBuilder<T>(): Builder<T> {
+  const data: Partial<T> = {};
+  return new Proxy({} as Builder<T>, {
+    get(_, key: string) {
+      if (key === 'build') return () => data as T;
+      return (value: unknown) => { (data as Record<string, unknown>)[key] = value; return proxy; };
+    },
+  });
+}`,
+  `function createStateMachine<S extends string, E extends string>(config: {
+  initial: S;
+  transitions: Partial<Record<S, Partial<Record<E, S>>>>;
+}) {
+  let current = config.initial;
+  return {
+    get state() { return current; },
+    send(event: E): boolean {
+      const next = config.transitions[current]?.[event];
+      if (!next) return false;
+      current = next;
+      return true;
+    },
+    matches(...states: S[]): boolean { return states.includes(current); },
+  };
+}`,
+  `type PathsToLeaves<T, P extends string = ""> = T extends object
+  ? { [K in keyof T]: PathsToLeaves<T[K], \`\${P}\${P extends "" ? "" : "."}\${K & string}\`> }[keyof T]
+  : P;
+type GetAtPath<T, Path extends string> =
+  Path extends \`\${infer Head}.\${infer Tail}\`
+    ? Head extends keyof T ? GetAtPath<T[Head], Tail> : never
+    : Path extends keyof T ? T[Path] : never;
+
+function getByPath<T, P extends PathsToLeaves<T>>(obj: T, path: P): GetAtPath<T, P> {
+  return path.split('.').reduce((acc: unknown, k) => (acc as Record<string, unknown>)[k], obj) as GetAtPath<T, P>;
+}`,
+  `class TaskQueue {
+  private running = 0;
+  private queue: Array<() => Promise<void>> = [];
+
+  constructor(private readonly concurrency: number) {}
+
+  async add<T>(task: () => Promise<T>): Promise<T> {
+    return new Promise<T>((resolve, reject) => {
+      this.queue.push(async () => {
+        try { resolve(await task()); } catch (e) { reject(e); } finally { this.dequeue(); }
+      });
+      this.dequeue();
+    });
+  }
+
+  private dequeue() {
+    while (this.running < this.concurrency && this.queue.length > 0) {
+      this.running++;
+      this.queue.shift()!();
+    }
+    if (this.queue.length === 0) this.running = Math.max(0, this.running - 1);
   }
 }`,
 ];
@@ -231,7 +336,7 @@ Type 'help' to see available commands.
 const helpMessage = `
 Available commands:
   help      - Show this help message
-  hackerman - Enter hackerman mode (press any key to "hack")
+  dev       - Enter developer mode (press any key to "code")
   fact      - Get a random fun fact about Ron
   clear     - Clear the terminal
   exit      - Exit developer mode
@@ -242,78 +347,78 @@ export function Terminal() {
   const { devMode, setDevMode } = useDevMode();
   const [input, setInput] = useState('');
   const [history, setHistory] = useState<string[]>([welcomeMessage, helpMessage]);
-  const [isHackermanMode, setIsHackermanMode] = useState(false);
-  const [hackermanBuffer, setHackermanBuffer] = useState('');
-  const [hackermanFullCode, setHackermanFullCode] = useState('');
-  const [hackermanCharIndex, setHackermanCharIndex] = useState(0);
+  const [isCodeMode, setIsCodeMode] = useState(false);
+  const [codeBuffer, setCodeBuffer] = useState('');
+  const [codeFullText, setCodeFullText] = useState('');
+  const [codeCharIndex, setCodeCharIndex] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
   const terminalRef = useRef<HTMLDivElement>(null);
-  const hackermanDivRef = useRef<HTMLDivElement>(null);
+  const developerDivRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (devMode && inputRef.current && !isHackermanMode) {
+    if (devMode && inputRef.current && !isCodeMode) {
       inputRef.current.focus();
     }
-  }, [devMode, isHackermanMode]);
+  }, [devMode, isCodeMode]);
 
   useEffect(() => {
     if (terminalRef.current) {
       terminalRef.current.scrollTop = terminalRef.current.scrollHeight;
     }
-  }, [history, hackermanBuffer]);
+  }, [history, codeBuffer]);
 
   useEffect(() => {
-    if (isHackermanMode && hackermanDivRef.current) {
-      hackermanDivRef.current.focus();
+    if (isCodeMode && developerDivRef.current) {
+      developerDivRef.current.focus();
     }
-  }, [isHackermanMode]);
+  }, [isCodeMode]);
 
   const addToHistory = useCallback((text: string) => {
     setHistory((prev) => [...prev, text]);
   }, []);
 
-  const generateHackermanCode = useCallback((): string => {
-    const shuffled = [...hackermanCodeBlocks].sort(() => Math.random() - 0.5);
-    return shuffled.slice(0, 6).join('\n\n// ========== BYPASSING SECURITY LAYER ==========\n\n');
+  const generateCodeBlock = useCallback((): string => {
+    const shuffled = [...developerCodeBlocks].sort(() => Math.random() - 0.5);
+    return shuffled.slice(0, 6).join('\n\n// ========== NEXT MODULE ==========\n\n');
   }, []);
 
-  const startHackermanMode = useCallback(() => {
-    setIsHackermanMode(true);
-    setHackermanBuffer('');
-    setHackermanCharIndex(0);
-    const code = generateHackermanCode();
-    setHackermanFullCode(code);
-    addToHistory('\n[HACKERMAN MODE ACTIVATED] - Press any key to hack... (ESC to exit)\n');
-  }, [generateHackermanCode, addToHistory]);
+  const startCodeMode = useCallback(() => {
+    setIsCodeMode(true);
+    setCodeBuffer('');
+    setCodeCharIndex(0);
+    const code = generateCodeBlock();
+    setCodeFullText(code);
+    addToHistory('\n[CODE MODE ACTIVATED] - Press any key to type... (ESC to exit)\n');
+  }, [generateCodeBlock, addToHistory]);
 
-  const exitHackermanMode = useCallback(() => {
-    setIsHackermanMode(false);
-    setHistory((prev) => [...prev, hackermanBuffer, '\n[HACKERMAN MODE DEACTIVATED]\n']);
-    setHackermanBuffer('');
-    setHackermanFullCode('');
-    setHackermanCharIndex(0);
-  }, [hackermanBuffer]);
+  const exitCodeMode = useCallback(() => {
+    setIsCodeMode(false);
+    setHistory((prev) => [...prev, codeBuffer, '\n[CODE MODE DEACTIVATED]\n']);
+    setCodeBuffer('');
+    setCodeFullText('');
+    setCodeCharIndex(0);
+  }, [codeBuffer]);
 
-  const handleHackermanKeyDown = useCallback((e: React.KeyboardEvent) => {
+  const handleCodeKeyDown = useCallback((e: React.KeyboardEvent) => {
     if (e.key === 'Escape') {
-      exitHackermanMode();
+      exitCodeMode();
       return;
     }
 
     e.preventDefault();
 
     const charsPerKeypress = Math.floor(Math.random() * 3) + 2;
-    const nextIndex = Math.min(hackermanCharIndex + charsPerKeypress, hackermanFullCode.length);
-    const newBuffer = hackermanFullCode.slice(0, nextIndex);
+    const nextIndex = Math.min(codeCharIndex + charsPerKeypress, codeFullText.length);
+    const newBuffer = codeFullText.slice(0, nextIndex);
 
-    setHackermanBuffer(newBuffer);
-    setHackermanCharIndex(nextIndex);
+    setCodeBuffer(newBuffer);
+    setCodeCharIndex(nextIndex);
 
-    if (nextIndex >= hackermanFullCode.length) {
-      const moreCode = '\n\n// ========== ACCESS GRANTED ==========\n\n' + generateHackermanCode();
-      setHackermanFullCode((prev) => prev + moreCode);
+    if (nextIndex >= codeFullText.length) {
+      const moreCode = '\n\n// ========== BUILD SUCCESSFUL ==========\n\n' + generateCodeBlock();
+      setCodeFullText((prev) => prev + moreCode);
     }
-  }, [hackermanFullCode, hackermanCharIndex, exitHackermanMode, generateHackermanCode]);
+  }, [codeFullText, codeCharIndex, exitCodeMode, generateCodeBlock]);
 
   const getRandomFact = useCallback(() => {
     const fact = funFacts[Math.floor(Math.random() * funFacts.length)];
@@ -328,9 +433,9 @@ export function Terminal() {
       case 'help':
         addToHistory(helpMessage);
         break;
-      case 'hackerman':
-      case 'hack':
-        startHackermanMode();
+      case 'dev':
+      case 'code':
+        startCodeMode();
         break;
       case 'fact':
         getRandomFact();
@@ -348,21 +453,21 @@ export function Terminal() {
         }
     }
     setInput('');
-  }, [addToHistory, startHackermanMode, getRandomFact, setDevMode]);
+  }, [addToHistory, startCodeMode, getRandomFact, setDevMode]);
 
   const handleKeyDown = useCallback((e: KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter' && !isHackermanMode) {
+    if (e.key === 'Enter' && !isCodeMode) {
       handleCommand(input);
     }
-  }, [isHackermanMode, handleCommand, input]);
+  }, [isCodeMode, handleCommand, input]);
 
   const handleTerminalClick = useCallback(() => {
-    if (isHackermanMode && hackermanDivRef.current) {
-      hackermanDivRef.current.focus();
+    if (isCodeMode && developerDivRef.current) {
+      developerDivRef.current.focus();
     } else if (inputRef.current) {
       inputRef.current.focus();
     }
-  }, [isHackermanMode]);
+  }, [isCodeMode]);
 
   const getLineClassName = useCallback((line: string) => {
     if (line.startsWith('$')) return classes.historyLineCommand;
@@ -380,29 +485,29 @@ export function Terminal() {
             <Box className={classes.minimizeButton} />
             <Box className={classes.maximizeButton} />
             <Text size="xs" className={classes.titleText}>
-              {isHackermanMode ? '💀 HACKERMAN MODE 💀' : 'ron@portfolio ~ zsh'}
+              {isCodeMode ? 'ron@portfolio ~ tsx' : 'ron@portfolio ~ zsh'}
             </Text>
           </Box>
 
           <Box
             ref={terminalRef}
             onClick={handleTerminalClick}
-            className={isHackermanMode ? classes.terminalContentHackerman : classes.terminalContent}
+            className={isCodeMode ? classes.terminalContentCode : classes.terminalContent}
           >
-            {isHackermanMode ? (
+            {isCodeMode ? (
               <Box
-                ref={hackermanDivRef}
+                ref={developerDivRef}
                 tabIndex={0}
-                onKeyDown={handleHackermanKeyDown}
-                className={classes.hackermanArea}
+                onKeyDown={handleCodeKeyDown}
+                className={classes.developerArea}
               >
                 {history.map((line, index) => (
                   <Text key={index} size="sm" className={getLineClassName(line)}>
                     {line}
                   </Text>
                 ))}
-                <Text size="xs" className={classes.hackermanCode}>
-                  {hackermanBuffer}
+                <Text size="xs" className={classes.developerCode}>
+                  {codeBuffer}
                   <span className={classes.cursor}>▊</span>
                 </Text>
               </Box>

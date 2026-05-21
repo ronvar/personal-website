@@ -155,7 +155,7 @@ export function Navbar() {
             <Group gap={6} className={classes.devToggleGroup}>
               <IconTerminal2 size={16} className={classes.devIcon} />
               <Text size="xs" fw={500} className={classes.devLabel}>
-                hacker mode
+                dev mode
               </Text>
               <Switch
                 size="xs"
