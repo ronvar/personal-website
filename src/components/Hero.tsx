@@ -62,7 +62,7 @@ export function Hero() {
             mb="md"
             style={{ letterSpacing: '0.1em' }}
           >
-            Full Stack Software Engineer
+            Software Engineer · Technical Support
           </Text>
         </FadeIn>
 
@@ -99,9 +99,9 @@ export function Hero() {
             mt="xl"
             style={{ lineHeight: 1.6 }}
           >
-            I build exceptional digital experiences with modern technologies.
-            Passionate about creating scalable, performant, and user-friendly
-            applications that make a difference.
+            I build software and I help people use it. Six years of shipping
+            products, plus being the person colleagues call when something
+            breaks: hardware, accounts, networks, or the app itself.
           </Text>
         </FadeIn>
 

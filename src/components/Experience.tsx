@@ -1,17 +1,30 @@
 'use client';
 
 import { Box, Title, Text, Timeline, Container, Badge, Group } from '@mantine/core';
-import { IconCode } from '@tabler/icons-react';
+import { IconCode, IconHeadset } from '@tabler/icons-react';
 import { FadeIn } from './FadeIn';
 
 const experiences = [
   {
+    company: 'Handl Health',
+    role: 'Technical Consultant',
+    period: 'Jun 2026 – Present',
+    support: true,
+    highlights: [
+      'Partnered with the VP of Marketing to align page layout, copy, and CCPA/GDPR compliance, while building reusable components and configuring Replit with regression tests to keep the site stable regardless of additions or changes.',
+      'Configured and troubleshot analytics, tag management, and CRM integrations (GA4, Google Tag Manager, HubSpot), including GDPR/CCPA consent handling.',
+      'Engineered a Replit prompt guide covering design language, layout patterns, and reusable components so non-technical staff could make site updates with consistent results without needing engineering support.',
+    ],
+  },
+  {
     company: 'BP.fun',
     role: 'Full Stack Software Engineer',
-    period: 'Jun 2025 – Present',
+    period: 'Jun 2025 – Feb 2026',
     highlights: [
-      'Architected an end-to-end social identity system (usernames, profile images, banners), migrating lookups from wallet-based identifiers to SEO-friendly slugs via Firestore–PostgreSQL synchronization.',
-      'Improved Next.js application performance by 50% by consolidating real-time event listeners and optimizing image rendering and delivery.',
+      'Go-to technical resource company-wide: diagnosed application, account, access, and endpoint issues, including remote macOS troubleshooting through Jamf.',
+      'Built onboarding and offboarding automation for account provisioning and access removal; added monitoring that caught issues before they became outages.',
+      'Improved Next.js application performance by nearly 50% by isolating bottlenecks, and kept the product stable through a high-traffic launch.',
+      'Co-built MCP servers to enable safe, consistent production data access during testing. With no staging environment available, the servers enforced read/write guardrails so the team could work with live data without risking corrupted state.',
     ],
   },
   {
@@ -19,8 +32,8 @@ const experiences = [
     role: 'Full Stack Software Engineer',
     period: 'Aug 2024 - April 2025',
     highlights: [
-      'Built and optimized two client dashboards (React, Next.js, Recharts) adopted by 3,000+ monthly users. Reduced churn by 12% through faster workflows and continuous UI/UX refinement.',
-      'Developed a high-volume scraping pipeline with proxy rotation and headless automation. Enabled parallel verification of 10K+ records per day while bypassing anti-bot protections.',
+      'Maintained applications serving 3,000+ users; investigated reported issues, gathered feedback, and shipped workflow fixes that reduced recurring support requests.',
+      'Built and optimized two client dashboards (React, Next.js, Recharts). Reduced churn by 12% through faster workflows and continuous UI refinement.',
     ],
   },
   {
@@ -37,8 +50,8 @@ const experiences = [
     role: 'Full Stack Software Engineer III',
     period: 'Oct 2021 - Dec 2022',
     highlights: [
+      'Coordinated a team of three engineers across testing, troubleshooting, deployment, and delivery.',
       'Implemented serverless workflows where replay uploads triggered AWS Lambda functions to parse content for highlights, enabling scalable processing without manual intervention.',
-      'Shipped Game Status Bar V1 within 2 weeks, raising in-game settings interactions by 15% and validating roadmap feasibility.',
     ],
   },
   {
@@ -46,8 +59,8 @@ const experiences = [
     role: 'Full Stack Software Engineer',
     period: 'Jul 2019 - Oct 2021',
     highlights: [
-      'Built backend automation pipelines using AWS SQS for job queuing and SNS for mobile app notifications, alongside Node.js and Python systems. Increased feature performance and efficiency by 15%.',
-      'Managed S3 storage and deployed both Unix and Windows EC2 instances (Unix for background workers, Windows for Steam update automation).',
+      'Worked directly with users and stakeholders to identify issues, ship fixes, and improve reliability.',
+      'Built backend automation pipelines using AWS SQS and SNS with Node.js and Python, cutting repetitive operational work and improving feature performance by 15%.',
     ],
   },
 ];
@@ -92,7 +105,13 @@ export function Experience() {
           {experiences.map((exp, index) => (
             <Timeline.Item
               key={exp.company}
-              bullet={<IconCode size={20} color="white" />}
+              bullet={
+                exp.support ? (
+                  <IconHeadset size={20} color="white" />
+                ) : (
+                  <IconCode size={20} color="white" />
+                )
+              }
               title={
                 <FadeIn delay={index * 100}>
                   <Group gap="sm" mb="xs">

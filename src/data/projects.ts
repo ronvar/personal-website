@@ -11,6 +11,20 @@ export interface Project {
 
 export const projects: Project[] = [
   {
+    title: 'Handl Health',
+    description: 'Website platform migration for a healthcare startup — coordinating marketing, legal, and engineering with analytics, tag management, and CRM integrations.',
+    tags: ['GA4', 'Google Tag Manager', 'HubSpot', 'GDPR/CCPA'],
+    gradient: 'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)',
+    coverUrl: '/img/handlhealth/homepage.png',
+    hasModal: true,
+    screenshots: [
+      '/img/handlhealth/homepage.png',
+      '/img/handlhealth/tabs.png',
+      '/img/handlhealth/hubspot-form.png',
+      '/img/handlhealth/mobile.png',
+    ],
+  },
+  {
     title: 'BP.fun',
     description: 'Revolutionary tokenomics platform enabling unique token creation and trading mechanics on the blockchain.',
     tags: ['React', 'Solana', 'TypeScript', 'Web3'],

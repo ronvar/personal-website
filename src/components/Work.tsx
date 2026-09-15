@@ -1,24 +1,67 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Box, Title, Text, Card, Container, Grid, Badge, Group, Modal, ActionIcon } from '@mantine/core';
-import { Carousel } from '@mantine/carousel';
 import Image from 'next/image';
-import { IconExternalLink, IconX } from '@tabler/icons-react';
+import { IconExternalLink, IconX, IconChevronLeft, IconChevronRight } from '@tabler/icons-react';
 import { FadeIn } from './FadeIn';
 import { projects, Project } from '../data/projects';
-import '@mantine/carousel/styles.css';
 
 export function Work() {
   const [modalOpen, setModalOpen] = useState(false);
   const [activeProject, setActiveProject] = useState<Project | null>(null);
+  const [slideIndex, setSlideIndex] = useState(0);
+  const [hovered, setHovered] = useState<'prev' | 'next' | 'close' | null>(null);
 
   const handleProjectClick = (project: Project) => {
     if (project.hasModal && project.screenshots && project.screenshots.length > 0) {
       setActiveProject(project);
+      setSlideIndex(0);
       setModalOpen(true);
     }
   };
+
+  const closeModal = useCallback(() => {
+    setModalOpen(false);
+    setSlideIndex(0);
+  }, []);
+
+  const prev = useCallback(() => {
+    if (!activeProject?.screenshots) return;
+    setSlideIndex((i) => (i - 1 + activeProject.screenshots!.length) % activeProject.screenshots!.length);
+  }, [activeProject]);
+
+  const next = useCallback(() => {
+    if (!activeProject?.screenshots) return;
+    setSlideIndex((i) => (i + 1) % activeProject.screenshots!.length);
+  }, [activeProject]);
+
+  useEffect(() => {
+    if (!modalOpen) return;
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === 'ArrowLeft') prev();
+      if (e.key === 'ArrowRight') next();
+      if (e.key === 'Escape') closeModal();
+    };
+    window.addEventListener('keydown', handler);
+    return () => window.removeEventListener('keydown', handler);
+  }, [modalOpen, prev, next, closeModal]);
+
+  useEffect(() => {
+    if (!modalOpen) return;
+    const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+    const pad = `${scrollbarWidth}px`;
+    document.documentElement.style.overflow = 'hidden';
+    document.documentElement.style.paddingRight = pad;
+    document.body.style.overflow = 'hidden';
+    document.body.style.paddingRight = pad;
+    return () => {
+      document.documentElement.style.overflow = '';
+      document.documentElement.style.paddingRight = '';
+      document.body.style.overflow = '';
+      document.body.style.paddingRight = '';
+    };
+  }, [modalOpen]);
 
   return (
     <Box
@@ -164,16 +207,18 @@ export function Work() {
 
       <Modal
         opened={modalOpen}
-        onClose={() => setModalOpen(false)}
+        onClose={closeModal}
         withCloseButton={false}
         centered
+        lockScroll={false}
+        transitionProps={{ transition: 'fade', duration: 200 }}
         size="auto"
         padding={0}
         zIndex={2000}
         overlayProps={{
-          backgroundOpacity: 0.5,
-          blur: 3,
-          color: 'white',
+          color: '#000000',
+          backgroundOpacity: 0.35,
+          blur: 5,
         }}
         styles={{
           content: {
@@ -183,71 +228,96 @@ export function Work() {
           },
           body: {
             padding: 0,
-          }
+          },
         }}
       >
         {activeProject && activeProject.screenshots && (
-          <Box style={{ position: 'relative', width: '90vw', maxWidth: '800px' }}>
-            <ActionIcon
-              variant="filled"
-              color="gray"
-              radius="xl"
-              size="lg"
-              onClick={() => setModalOpen(false)}
-              style={{
-                position: 'absolute',
-                top: -20,
-                right: 0,
-                zIndex: 100,
-                opacity: 0.8,
-                transition: "all 0.15s ease-in-out"
-              }}
-            >
-              <IconX size={20} />
-            </ActionIcon>
+          <Box style={{ width: '90vw', maxWidth: '860px', display: 'flex', flexDirection: 'column', gap: 12 }}>
+            {/* Image */}
+            <Box style={{ position: 'relative', height: '72vh', width: '100%', borderRadius: 12, overflow: 'hidden' }}>
+              <Image
+                src={activeProject.screenshots[slideIndex]}
+                alt={`${activeProject.title} screenshot ${slideIndex + 1}`}
+                fill
+                style={{ objectFit: 'contain', borderRadius: 12 }}
+                priority
+                sizes="90vw"
+              />
+            </Box>
 
-            <Carousel
-              withIndicators
-              emblaOptions={{ loop: true }}
-              styles={{
-                control: {
-                  backgroundColor: 'white',
-                  color: 'black',
-                  opacity: 0.7,
-                  border: 'none',
-                  '&:hover': {
-                    opacity: 1
-                  }
-                },
-                indicator: {
-                  backgroundColor: 'white',
-                  opacity: 0.5,
-                  '&[data-active]': {
-                    opacity: 1
-                  }
-                },
-                slide: {
-                  borderRadius: '10px',
-                  overflow: 'hidden',
-                }
+            {/* Control bar */}
+            <Box
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                backgroundColor: 'rgba(255, 255, 255, 0.4)',
+                backdropFilter: 'blur(20px) saturate(180%)',
+                WebkitBackdropFilter: 'blur(20px) saturate(180%)',
+                borderRadius: 40,
+                padding: '6px 10px',
+                boxShadow: '0 2px 16px rgba(0,0,0,0.10), inset 0 0 0 0.5px rgba(255,255,255,0.6)',
               }}
             >
-              {activeProject.screenshots.map((url, i) => (
-                <Carousel.Slide key={i}>
-                  {/* Fixed height container for lightbox feel, image contains itself */}
-                  <Box style={{ position: 'relative', height: '80vh', width: '100%', borderRadius: '10px', overflow: 'hidden' }}>
-                    <Image
-                      src={url}
-                      alt={`${activeProject.title} Screenshot ${i + 1}`}
-                      fill
-                      style={{ objectFit: 'contain' }}
-                      priority={i === 0}
-                      sizes="90vw"
-                    />
-                  </Box>
-                </Carousel.Slide>
-              ))}
-            </Carousel>
+              <ActionIcon
+                variant="subtle"
+                radius="xl"
+                size="lg"
+                onClick={prev}
+                disabled={activeProject.screenshots.length <= 1}
+                aria-label="Previous screenshot"
+                onMouseEnter={() => setHovered('prev')}
+                onMouseLeave={() => setHovered(null)}
+                style={{ color: 'rgba(0,0,0,0.75)', backgroundColor: hovered === 'prev' ? 'rgba(255,255,255,0.26)' : 'rgba(255,255,255,0.1)', backdropFilter: 'blur(20px) saturate(180%)', WebkitBackdropFilter: 'blur(20px) saturate(180%)', transition: 'background-color 0.15s ease' }}
+              >
+                <IconChevronLeft size={20} />
+              </ActionIcon>
+
+              <Group gap={6}>
+                {activeProject.screenshots.map((_, i) => (
+                  <Box
+                    key={i}
+                    onClick={() => setSlideIndex(i)}
+                    style={{
+                      width: i === slideIndex ? 20 : 7,
+                      height: 7,
+                      borderRadius: 4,
+                      backgroundColor: i === slideIndex ? 'rgba(0,0,0,0.75)' : 'rgba(0,0,0,0.2)',
+                      cursor: 'pointer',
+                      transition: 'all 0.2s ease',
+                    }}
+                  />
+                ))}
+              </Group>
+
+              <Group gap={2}>
+                <ActionIcon
+                  variant="subtle"
+                  radius="xl"
+                  size="lg"
+                  onClick={next}
+                  disabled={activeProject.screenshots.length <= 1}
+                  aria-label="Next screenshot"
+                  onMouseEnter={() => setHovered('next')}
+                  onMouseLeave={() => setHovered(null)}
+                  style={{ color: 'rgba(0,0,0,0.75)', backgroundColor: hovered === 'next' ? 'rgba(255,255,255,0.26)' : 'rgba(255,255,255,0.1)', backdropFilter: 'blur(20px) saturate(180%)', WebkitBackdropFilter: 'blur(20px) saturate(180%)', transition: 'background-color 0.15s ease' }}
+                >
+                  <IconChevronRight size={20} />
+                </ActionIcon>
+                <ActionIcon
+                  variant="subtle"
+                  radius="xl"
+                  size="lg"
+                  onClick={closeModal}
+                  aria-label="Close"
+                  onMouseEnter={() => setHovered('close')}
+                  onMouseLeave={() => setHovered(null)}
+                  style={{ color: 'rgba(180,20,20,1)', backgroundColor: hovered === 'close' ? 'rgba(220,50,50,0.15)' : 'rgba(255,255,255,0.18)', transition: 'background-color 0.15s ease' }}
+                >
+                  <IconX size={18} />
+                </ActionIcon>
+              </Group>
+            </Box>
           </Box>
         )}
       </Modal>

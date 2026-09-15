@@ -42,14 +42,25 @@ const useStyles = createStyles(() => ({
 
 const skillCategories = [
   {
+    title: "Support & Systems",
+    skills: [
+      "Jamf",
+      "macOS / Windows",
+      "Google Workspace",
+      "HubSpot",
+      "Account & access management",
+      "Jira",
+      "Airtable",
+      "Networking",
+    ],
+  },
+  {
     title: "AI & Automation",
     skills: [
       "Claude Code",
       "Cursor",
       "Antigravity",
-      "AI-assisted development workflows",
-      "Internal tooling",
-      "Prompt/workflow",
+      "MCP Servers",
     ],
   },
 

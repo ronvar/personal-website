@@ -15,7 +15,13 @@ import {
   rem,
 } from "@mantine/core";
 import { createStyles } from "@mantine/emotion";
-import { IconCode, IconHammer, IconCar, IconServer } from "@tabler/icons-react";
+import {
+  IconCode,
+  IconHeadset,
+  IconHammer,
+  IconCar,
+  IconServer,
+} from "@tabler/icons-react";
 import { FadeIn } from "./FadeIn";
 
 const useStyles = createStyles((theme) => ({
@@ -69,103 +75,156 @@ export function AboutMe() {
         </FadeIn>
 
         <Stack gap="xl">
-          {/* Engineering Philosophy Section */}
-          <FadeIn delay={100}>
-            <Paper
-              radius="xl"
-              p="xl"
-              className={classes.glassCard}
-              style={{ backgroundColor: cardBackgroundColor }}
-            >
-              <Group align="flex-start" wrap="nowrap" mb="md">
-                <ThemeIcon size={48} radius="md" variant="light" color="blue">
-                  <IconCode
-                    style={{ width: rem(28), height: rem(28) }}
-                    stroke={1.5}
-                  />
-                </ThemeIcon>
-                <div>
-                  <Title order={3} size="h3" mb="xs">
-                    Engineering Philosophy
-                  </Title>
-                  <Text c="dimmed" style={{ lineHeight: 1.7 }} size="lg">
-                    I strive for{" "}
-                    <Text span c="blue" fw={600}>
-                      simple but effective
-                    </Text>{" "}
-                    user experiences and maintain
-                    <Text span c="blue" fw={600}>
-                      {" "}
-                      clear code
-                    </Text>{" "}
-                    and{" "}
-                    <Text span c="blue" fw={600}>
-                      performance
-                    </Text>{" "}
-                    across the stack. I believe that the best software feels
-                    effortless to use and is built on a foundation of
-                    straightforward, readable logic.
-                  </Text>
-                </div>
-              </Group>
-              <Group gap="xs" mt="sm">
-                <Badge
-                  variant="light"
-                  color="blue"
-                  size="lg"
-                  radius="xl"
-                  className={classes.pill}
-                >
-                  User-Centric
-                </Badge>
-                <Badge
-                  variant="light"
-                  color="blue"
-                  size="lg"
-                  radius="xl"
-                  className={classes.pill}
-                >
-                  Clean Architecture
-                </Badge>
-                <Badge
-                  variant="light"
-                  color="blue"
-                  size="lg"
-                  radius="xl"
-                  className={classes.pill}
-                >
-                  Readable Code
-                </Badge>
-                <Badge
-                  variant="light"
-                  color="blue"
-                  size="lg"
-                  radius="xl"
-                  className={classes.pill}
-                >
-                  Performance
-                </Badge>
-                <Badge
-                  variant="light"
-                  color="blue"
-                  size="lg"
-                  radius="xl"
-                  className={classes.pill}
-                >
-                  Maintainability
-                </Badge>
-                <Badge
-                  variant="light"
-                  color="blue"
-                  size="lg"
-                  radius="xl"
-                  className={classes.pill}
-                >
-                  Scalability
-                </Badge>
-              </Group>
-            </Paper>
-          </FadeIn>
+          <SimpleGrid cols={{ base: 1, md: 2 }} spacing="lg">
+            <FadeIn delay={100}>
+              <Paper
+                radius="xl"
+                p="xl"
+                className={classes.glassCard}
+                style={{ backgroundColor: cardBackgroundColor }}
+              >
+                <Group align="flex-start" wrap="nowrap" mb="md">
+                  <ThemeIcon size={48} radius="md" variant="light" color="blue">
+                    <IconCode
+                      style={{ width: rem(28), height: rem(28) }}
+                      stroke={1.5}
+                    />
+                  </ThemeIcon>
+                  <div>
+                    <Title order={3} size="h3" mb="xs">
+                      Engineering
+                    </Title>
+                    <Text c="dimmed" style={{ lineHeight: 1.7 }}>
+                      I strive for{" "}
+                      <Text span c="blue" fw={600}>
+                        simple but effective
+                      </Text>{" "}
+                      user experiences,{" "}
+                      <Text span c="blue" fw={600}>
+                        clear code
+                      </Text>
+                      {", "}
+                      and{" "}
+                      <Text span c="blue" fw={600}>
+                        performance
+                      </Text>{" "}
+                      across the stack. The best software feels effortless and
+                      sits on straightforward, readable logic.
+                    </Text>
+                  </div>
+                </Group>
+                <Group gap="xs" mt="sm">
+                  <Badge
+                    variant="light"
+                    color="blue"
+                    size="lg"
+                    radius="xl"
+                    className={classes.pill}
+                  >
+                    User-Centric
+                  </Badge>
+                  <Badge
+                    variant="light"
+                    color="blue"
+                    size="lg"
+                    radius="xl"
+                    className={classes.pill}
+                  >
+                    Clean Architecture
+                  </Badge>
+                  <Badge
+                    variant="light"
+                    color="blue"
+                    size="lg"
+                    radius="xl"
+                    className={classes.pill}
+                  >
+                    Performance
+                  </Badge>
+                  <Badge
+                    variant="light"
+                    color="blue"
+                    size="lg"
+                    radius="xl"
+                    className={classes.pill}
+                  >
+                    Maintainability
+                  </Badge>
+                </Group>
+              </Paper>
+            </FadeIn>
+
+            <FadeIn delay={180}>
+              <Paper
+                radius="xl"
+                p="xl"
+                className={classes.glassCard}
+                style={{ backgroundColor: cardBackgroundColor }}
+              >
+                <Group align="flex-start" wrap="nowrap" mb="md">
+                  <ThemeIcon size={48} radius="md" variant="light" color="teal">
+                    <IconHeadset
+                      style={{ width: rem(28), height: rem(28) }}
+                      stroke={1.5}
+                    />
+                  </ThemeIcon>
+                  <div>
+                    <Title order={3} size="h3" mb="xs">
+                      Technical Support
+                    </Title>
+                    <Text c="dimmed" style={{ lineHeight: 1.7 }}>
+                      I am often the{" "}
+                      <Text span c="teal" fw={600}>
+                        first call
+                      </Text>{" "}
+                      when something technical fails: apps, accounts, endpoints,
+                      or networks. I diagnose under time pressure, write docs
+                      people can follow, and train non-technical colleagues so
+                      they can keep going without me.
+                    </Text>
+                  </div>
+                </Group>
+                <Group gap="xs" mt="sm">
+                  <Badge
+                    variant="light"
+                    color="teal"
+                    size="lg"
+                    radius="xl"
+                    className={classes.pill}
+                  >
+                    End-User Support
+                  </Badge>
+                  <Badge
+                    variant="light"
+                    color="teal"
+                    size="lg"
+                    radius="xl"
+                    className={classes.pill}
+                  >
+                    Documentation
+                  </Badge>
+                  <Badge
+                    variant="light"
+                    color="teal"
+                    size="lg"
+                    radius="xl"
+                    className={classes.pill}
+                  >
+                    Training
+                  </Badge>
+                  <Badge
+                    variant="light"
+                    color="teal"
+                    size="lg"
+                    radius="xl"
+                    className={classes.pill}
+                  >
+                    Systems & AV
+                  </Badge>
+                </Group>
+              </Paper>
+            </FadeIn>
+          </SimpleGrid>
 
           <Box>
             <FadeIn delay={200}>
@@ -259,12 +318,13 @@ export function AboutMe() {
                     />
                   </ThemeIcon>
                   <Text fw={600} size="lg" mb="xs">
-                    Home Media Automation
+                    Home Lab & AV
                   </Text>
                   <Text c="dimmed" size="sm" style={{ lineHeight: 1.6 }}>
-                    Built a self-hosted media automation system with
-                    Signal-based command handling, background job orchestration,
-                    remote server management, and Plex integration.
+                    Home server, structured Ethernet, routing and wireless,
+                    plus a nine-channel theater I designed and calibrated.
+                    I also assemble and repair PCs and chase down display,
+                    projector, and connectivity faults.
                   </Text>
                 </Paper>
               </FadeIn>
