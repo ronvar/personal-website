@@ -170,7 +170,7 @@ export function AboutMe() {
                   </ThemeIcon>
                   <div>
                     <Title order={3} size="h3" mb="xs">
-                      Technical Support
+                      Technical Support & Consultant
                     </Title>
                     <Text c="dimmed" style={{ lineHeight: 1.7 }}>
                       I am often the{" "}
@@ -180,7 +180,11 @@ export function AboutMe() {
                       when something technical fails: apps, accounts, endpoints,
                       or networks. I diagnose under time pressure, write docs
                       people can follow, and train non-technical colleagues so
-                      they can keep going without me.
+                      they can keep going without me. As a technical consultant,
+                      I bring that same approach to a client engagement: troubleshooting analytics, tag management, and
+                      CRM integrations, keeping compliance requirements like
+                      GDPR/CCPA in check, and equipping their non-technical team
+                      to make site updates confidently on their own.
                     </Text>
                   </div>
                 </Group>
@@ -220,6 +224,15 @@ export function AboutMe() {
                     className={classes.pill}
                   >
                     Systems & AV
+                  </Badge>
+                  <Badge
+                    variant="light"
+                    color="teal"
+                    size="lg"
+                    radius="xl"
+                    className={classes.pill}
+                  >
+                    Client Consulting
                   </Badge>
                 </Group>
               </Paper>

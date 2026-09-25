@@ -62,7 +62,7 @@ export function Hero() {
             mb="md"
             style={{ letterSpacing: '0.1em' }}
           >
-            Software Engineer · Technical Support
+            Software Engineer · Technical Support & Consultant
           </Text>
         </FadeIn>
 

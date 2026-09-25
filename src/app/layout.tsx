@@ -10,19 +10,19 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Ronald Vargas | Software Engineer & Technical Support",
+  title: "Ronald Vargas | Software Engineer & Technical Support & Consultant",
   description: "Software engineer and technical support specialist. I build products and help people use them: application issues, hardware, networking, and training.",
-  keywords: ["Software Engineer", "Technical Support", "Full Stack Developer", "React", "Next.js", "TypeScript", "AWS", "End-user Support"],
+  keywords: ["Software Engineer", "Technical Support", "Consultant", "Full Stack Developer", "React", "Next.js", "TypeScript", "AWS", "End-user Support"],
   authors: [{ name: "Ronald Vargas" }],
   openGraph: {
-    title: "Ronald Vargas | Software Engineer & Technical Support",
+    title: "Ronald Vargas | Software Engineer & Technical Support & Consultant",
     description: "Software engineer who also supports users, colleagues, and systems: React, TypeScript, and hands-on technology support.",
     type: "website",
     images: ["/img/meta.png"],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Ronald Vargas | Software Engineer & Technical Support",
+    title: "Ronald Vargas | Software Engineer & Technical Support & Consultant",
     description: "Software engineer who also supports users, colleagues, and systems: React, TypeScript, and hands-on technology support.",
     images: ["/img/meta.png"],
   },
