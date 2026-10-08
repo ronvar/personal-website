@@ -1,11 +1,12 @@
 'use client';
 
 import { useState, useRef } from 'react';
-import { Box, Title, Text, Group, ActionIcon, Tooltip, Container, Switch } from '@mantine/core';
-import { IconBrandGithub, IconBrandLinkedin, IconMail } from '@tabler/icons-react';
+import { Box, Title, Text, Group, ActionIcon, Tooltip, Container } from '@mantine/core';
+import { IconBrandGithub, IconBrandLinkedin } from '@tabler/icons-react';
 import { FadeIn } from './FadeIn';
 import { useDevMode } from './DevModeContext';
 import { BackgroundAnimation } from './BackgroundAnimation';
+import { ContactButton } from './ContactButton';
 
 export function Hero() {
   const [, setClickCount] = useState(0);
@@ -99,9 +100,9 @@ export function Hero() {
             mt="xl"
             style={{ lineHeight: 1.6 }}
           >
-            I build software and I help people use it. Six years of shipping
-            products, plus being the person colleagues call when something
-            breaks: hardware, accounts, networks, or the app itself.
+            I build software and help people use it. I bring 6+ years of
+            experience shipping products, troubleshooting systems, and supporting
+            teams across software, hardware, accounts, and networks.
           </Text>
         </FadeIn>
 
@@ -131,16 +132,7 @@ export function Hero() {
             >
               <IconBrandLinkedin size={24} />
             </ActionIcon>
-            <ActionIcon
-              component="a"
-              href="mailto:ron.var@icloud.com"
-              variant="subtle"
-              size="xl"
-              radius="xl"
-              aria-label="Email"
-            >
-              <IconMail size={24} />
-            </ActionIcon>
+            <ContactButton />
           </Group>
         </FadeIn>
 

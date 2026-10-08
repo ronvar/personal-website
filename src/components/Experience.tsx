@@ -1,78 +1,53 @@
 'use client';
 
-import { Box, Title, Text, Timeline, Container, Badge, Group } from '@mantine/core';
+import { Box, Title, Text, Timeline, Container, Badge, Group, Paper, SimpleGrid, Stack } from '@mantine/core';
+import { createStyles } from '@mantine/emotion';
 import { IconCode, IconHeadset } from '@tabler/icons-react';
 import { FadeIn } from './FadeIn';
+import { experiences } from '@/data/experiences';
 
-const experiences = [
-  {
-    company: 'Handl Health',
-    role: 'Technical Consultant',
-    period: 'Jun 2026 – Present',
-    support: true,
-    highlights: [
-      'Partnered with the VP of Marketing to align page layout, copy, and CCPA/GDPR compliance, while building reusable components and configuring Replit with regression tests to keep the site stable regardless of additions or changes.',
-      'Configured and troubleshot analytics, tag management, and CRM integrations (GA4, Google Tag Manager, HubSpot), including GDPR/CCPA consent handling.',
-      'Engineered a Replit prompt guide covering design language, layout patterns, and reusable components so non-technical staff could make site updates with consistent results without needing engineering support.',
-    ],
+const useStyles = createStyles(() => ({
+  section: {
+    backgroundColor: 'var(--background)',
   },
-  {
-    company: 'BP.fun',
-    role: 'Full Stack Software Engineer',
-    period: 'Jun 2025 – Feb 2026',
-    highlights: [
-      'Go-to technical resource company-wide: diagnosed application, account, access, and endpoint issues, including remote macOS troubleshooting through Jamf.',
-      'Built onboarding and offboarding automation for account provisioning and access removal; added monitoring that caught issues before they became outages.',
-      'Improved Next.js application performance by nearly 50% by isolating bottlenecks, and kept the product stable through a high-traffic launch.',
-      'Co-built MCP servers to enable safe, consistent production data access during testing. With no staging environment available, the servers enforced read/write guardrails so the team could work with live data without risking corrupted state.',
-    ],
+  eyebrow: {
+    letterSpacing: '0.1em',
   },
-  {
-    company: 'Mentaport',
-    role: 'Full Stack Software Engineer',
-    period: 'Aug 2024 - April 2025',
-    highlights: [
-      'Maintained applications serving 3,000+ users; investigated reported issues, gathered feedback, and shipped workflow fixes that reduced recurring support requests.',
-      'Built and optimized two client dashboards (React, Next.js, Recharts). Reduced churn by 12% through faster workflows and continuous UI refinement.',
-    ],
+  metrics: {
+    backgroundColor: 'var(--gray-100)',
+    border: '1px solid var(--gray-200)',
   },
-  {
-    company: 'Bello.lol',
-    role: 'Full Stack Software Engineer',
-    period: 'Aug 2023 - May 2024',
-    highlights: [
-      'Led full stack rebuild of Bello V2 (Postgres, Next.js). Improved page load times by 25% and introduced user-personalized themes that increased retention.',
-      'Engineered secure decentralized messaging services (XMTP, Farcaster) with custom encryption. Supported 10K+ encrypted messages per month and provided analytics for click-through tracking.',
-    ],
+  metric: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: 6,
+    minWidth: 0,
   },
-  {
-    company: 'Medal.tv',
-    role: 'Full Stack Software Engineer III',
-    period: 'Oct 2021 - Dec 2022',
-    highlights: [
-      'Coordinated a team of three engineers across testing, troubleshooting, deployment, and delivery.',
-      'Implemented serverless workflows where replay uploads triggered AWS Lambda functions to parse content for highlights, enabling scalable processing without manual intervention.',
-    ],
+  metricValue: {
+    order: -1,
+    color: 'var(--foreground)',
+    fontSize: 'clamp(1.5rem, 4vw, 2rem)',
+    fontWeight: 600,
+    letterSpacing: '-0.04em',
+    lineHeight: 1.2,
+    fontVariantNumeric: 'tabular-nums',
+    whiteSpace: 'nowrap',
   },
-  {
-    company: 'Gif Your Game',
-    role: 'Full Stack Software Engineer',
-    period: 'Jul 2019 - Oct 2021',
-    highlights: [
-      'Worked directly with users and stakeholders to identify issues, ship fixes, and improve reliability.',
-      'Built backend automation pipelines using AWS SQS and SNS with Node.js and Python, cutting repetitive operational work and improving feature performance by 15%.',
-    ],
+  highlights: {
+    margin: 0,
+    paddingLeft: '1.2rem',
   },
-];
+}));
 
 export function Experience() {
+  const { classes } = useStyles();
+
   return (
     <Box
       component="section"
       id="experience"
-      style={{
-        backgroundColor: 'var(--background)',
-      }}
+      aria-labelledby="experience-title"
+      className={classes.section}
     >
       <Container size="md">
         <FadeIn>
@@ -82,19 +57,24 @@ export function Experience() {
             fw={600}
             c="blue"
             mb="xs"
-            style={{ letterSpacing: '0.1em' }}
+            className={classes.eyebrow}
           >
             Career
           </Text>
-          <Title order={2} size="2.5rem" mb="xl">
+          <Title order={2} id="experience-title" size="2.5rem" mb="sm">
             Experience
           </Title>
+          <Text c="dimmed" mb="xl" maw={560} style={{ lineHeight: 1.7 }}>
+            Building products, supporting the people who use them, and keeping
+            the systems behind them running.
+          </Text>
         </FadeIn>
 
         <Timeline
           active={experiences.length - 1}
           bulletSize={40}
           lineWidth={2}
+          color="blue"
           styles={{
             itemBullet: {
               backgroundColor: 'var(--apple-blue)',
@@ -107,42 +87,75 @@ export function Experience() {
               key={exp.company}
               bullet={
                 exp.support ? (
-                  <IconHeadset size={20} color="white" />
+                  <IconHeadset size={20} color="white" aria-hidden="true" />
                 ) : (
-                  <IconCode size={20} color="white" />
+                  <IconCode size={20} color="white" aria-hidden="true" />
                 )
               }
               title={
                 <FadeIn delay={index * 100}>
                   <Group gap="sm" mb="xs">
-                    <Text fw={600} size="lg">
-                      {exp.role}
-                    </Text>
+                    <Title order={3} size="lg" fw={600}>
+                      {exp.company}
+                    </Title>
                     <Badge variant="light" color="blue" size="sm">
                       {exp.period}
                     </Badge>
                   </Group>
-                  <Text fw={500} c="dimmed.8" size="md" mb="sm">
-                    {exp.company}
+                  <Text fw={500} c="dimmed" size="sm" mb="md">
+                    {exp.role}
                   </Text>
                 </FadeIn>
               }
             >
               <FadeIn delay={index * 100 + 50}>
-                <Box component="ul" style={{ margin: 0, paddingLeft: '1.2rem' }}>
-                  {exp.highlights.map((highlight, i) => (
-                    <Text
-                      key={i}
-                      component="li"
-                      size="sm"
-                      c="dimmed"
-                      mb={4}
-                      style={{ lineHeight: 1.5 }}
+                {exp.metrics.length > 0 && (
+                  <Paper p={{ base: 'md', sm: 'lg' }} radius="lg" mb="lg" className={classes.metrics}>
+                    <SimpleGrid
+                      component="dl"
+                      aria-label={`${exp.company} results`}
+                      type="container"
+                      cols={{ base: 1, '200px': Math.min(2, exp.metrics.length), '500px': exp.metrics.length }}
+                      spacing="md"
+                      m={0}
                     >
-                      {highlight}
-                    </Text>
+                      {exp.metrics.map((metric) => (
+                        <Box key={metric.label} className={classes.metric}>
+                          <Text component="dt" size="xs" c="dimmed" style={{ lineHeight: 1.5 }}>
+                            {metric.label}
+                          </Text>
+                          <Text component="dd" m={0} className={classes.metricValue}>
+                            {metric.value}
+                          </Text>
+                        </Box>
+                      ))}
+                    </SimpleGrid>
+                  </Paper>
+                )}
+
+                <Stack gap="md">
+                  {exp.highlights.map((group) => (
+                    <Box key={group.title}>
+                      <Title order={4} size="xs" fw={600} mb="xs" c="var(--foreground)">
+                        {group.title}
+                      </Title>
+                      <Box component="ul" className={classes.highlights}>
+                        {group.items.map((highlight) => (
+                          <Text
+                            key={highlight}
+                            component="li"
+                            size="sm"
+                            c="dimmed"
+                            mb="xs"
+                            style={{ lineHeight: 1.7 }}
+                          >
+                            {highlight}
+                          </Text>
+                        ))}
+                      </Box>
+                    </Box>
                   ))}
-                </Box>
+                </Stack>
               </FadeIn>
             </Timeline.Item>
           ))}

@@ -55,7 +55,7 @@ export const projects: Project[] = [
     description: 'Comprehensive web3 analytics dashboard providing insights into NFT collections and wallet behavior.',
     tags: ['React', 'Typescript', 'Recharts', 'Blockchain', 'SQL', 'Firestore'],
     gradient: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
-    coverUrl: 'https://media.licdn.com/dms/image/v2/D562DAQGb0aHLG6kY1g/profile-treasury-image-shrink_800_800/profile-treasury-image-shrink_800_800/0/1716490932799?e=1770962400&v=beta&t=ewzpI_p_zujz-7fFGFQoVlrAZpIYzYGXJs7smqn9Q18',
+    coverUrl: '/img/bello/bello-wallets.png',
     hasModal: true,
     screenshots: [
       "/img/bello/bello-wallets.png",
