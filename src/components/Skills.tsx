@@ -13,7 +13,6 @@ import {
   useMantineColorScheme,
 } from "@mantine/core";
 import { createStyles } from "@mantine/emotion";
-import { FadeIn } from "./FadeIn";
 
 const useStyles = createStyles(() => ({
   section: {
@@ -137,12 +136,8 @@ export function Skills() {
       : "rgba(255, 255, 255, 0.72)";
 
   const renderSkillCategory = useCallback(
-    (category: (typeof skillCategories)[0], index: number) => (
-      <FadeIn
-        key={category.title}
-        delay={index * 100}
-        style={{ height: "100%" }}
-      >
+    (category: (typeof skillCategories)[0]) => (
+      <Box key={category.title} style={{ height: "100%" }}>
         <Paper
           p="xl"
           radius="xl"
@@ -167,7 +162,7 @@ export function Skills() {
             ))}
           </Group>
         </Paper>
-      </FadeIn>
+      </Box>
     ),
     [classes.glassCard, classes.badge, cardBackgroundColor],
   );
@@ -175,7 +170,7 @@ export function Skills() {
   return (
     <Box component="section" id="skills" className={classes.section}>
       <Container size="lg">
-        <FadeIn>
+        <Box>
           <Text
             size="sm"
             tt="uppercase"
@@ -189,7 +184,7 @@ export function Skills() {
           <Title order={2} size="2.5rem" mb="xl">
             Skills & Technologies
           </Title>
-        </FadeIn>
+        </Box>
 
         <SimpleGrid
           cols={{ base: 1, sm: 2 }}

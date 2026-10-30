@@ -3,7 +3,6 @@
 import { Box, Title, Text, Timeline, Container, Badge, Group, Paper, SimpleGrid, Stack } from '@mantine/core';
 import { createStyles } from '@mantine/emotion';
 import { IconCode, IconHeadset } from '@tabler/icons-react';
-import { FadeIn } from './FadeIn';
 import { experiences } from '@/data/experiences';
 
 const useStyles = createStyles(() => ({
@@ -50,7 +49,7 @@ export function Experience() {
       className={classes.section}
     >
       <Container size="md">
-        <FadeIn>
+        <Box>
           <Text
             size="sm"
             tt="uppercase"
@@ -68,7 +67,7 @@ export function Experience() {
             Building products, supporting the people who use them, and keeping
             the systems behind them running.
           </Text>
-        </FadeIn>
+        </Box>
 
         <Timeline
           active={experiences.length - 1}
@@ -82,7 +81,7 @@ export function Experience() {
             },
           }}
         >
-          {experiences.map((exp, index) => (
+          {experiences.map((exp) => (
             <Timeline.Item
               key={exp.company}
               bullet={
@@ -93,7 +92,7 @@ export function Experience() {
                 )
               }
               title={
-                <FadeIn delay={index * 100}>
+                <Box>
                   <Group gap="sm" mb="xs">
                     <Title order={3} size="lg" fw={600}>
                       {exp.company}
@@ -105,10 +104,10 @@ export function Experience() {
                   <Text fw={500} c="dimmed" size="sm" mb="md">
                     {exp.role}
                   </Text>
-                </FadeIn>
+                </Box>
               }
             >
-              <FadeIn delay={index * 100 + 50}>
+              <Box>
                 {exp.metrics.length > 0 && (
                   <Paper p={{ base: 'md', sm: 'lg' }} radius="lg" mb="lg" className={classes.metrics}>
                     <SimpleGrid
@@ -156,7 +155,7 @@ export function Experience() {
                     </Box>
                   ))}
                 </Stack>
-              </FadeIn>
+              </Box>
             </Timeline.Item>
           ))}
         </Timeline>

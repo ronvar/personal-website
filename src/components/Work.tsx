@@ -4,7 +4,6 @@ import { useState, useEffect, useCallback } from 'react';
 import { Box, Title, Text, Card, Container, Grid, Badge, Group, Modal, ActionIcon } from '@mantine/core';
 import Image from 'next/image';
 import { IconExternalLink, IconX, IconChevronLeft, IconChevronRight } from '@tabler/icons-react';
-import { FadeIn } from './FadeIn';
 import { projects, Project } from '../data/projects';
 
 export function Work() {
@@ -72,7 +71,7 @@ export function Work() {
       }}
     >
       <Container size="lg">
-        <FadeIn>
+        <Box>
           <Text
             size="sm"
             tt="uppercase"
@@ -86,7 +85,7 @@ export function Work() {
           <Title order={2} size="2.5rem" mb="xl">
             Featured Work
           </Title>
-        </FadeIn>
+        </Box>
 
         <Grid gutter="xl">
           {projects.map((project, index) => {
@@ -190,7 +189,7 @@ export function Work() {
 
             return (
               <Grid.Col key={project.title} span={{ base: 12, sm: span }}>
-                <FadeIn delay={index * 100} style={{ height: '100%' }}>
+                <Box style={{ height: '100%' }}>
                   {project.link ? (
                     <a href={project.link} target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none', height: '100%', display: 'block' }}>
                       {cardContent}
@@ -198,7 +197,7 @@ export function Work() {
                   ) : (
                     cardContent
                   )}
-                </FadeIn>
+                </Box>
               </Grid.Col>
             );
           })}

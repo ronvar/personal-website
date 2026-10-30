@@ -3,7 +3,6 @@
 import { useState, useRef } from 'react';
 import { Box, Title, Text, Group, ActionIcon, Tooltip, Container } from '@mantine/core';
 import { IconBrandGithub, IconBrandLinkedin } from '@tabler/icons-react';
-import { FadeIn } from './FadeIn';
 import { useDevMode } from './DevModeContext';
 import { BackgroundAnimation } from './BackgroundAnimation';
 import { ContactButton } from './ContactButton';
@@ -41,8 +40,10 @@ export function Hero() {
       component="section"
       id="about"
       className="gradient-bg"
+      mt={{ base: 110, sm: 64 }}
+      py={40}
       style={{
-        minHeight: '100vh',
+        minHeight: 'auto',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -52,9 +53,7 @@ export function Hero() {
     >
       <BackgroundAnimation devMode={devMode} />
       <Container size="md" style={{ textAlign: 'center', position: 'relative', zIndex: 1 }}>
-        <Group justify="flex-end" mb="xl">
-        </Group>
-        <FadeIn>
+        <Box>
           <Text
             size="sm"
             tt="uppercase"
@@ -65,9 +64,9 @@ export function Hero() {
           >
             Software Engineer · Technical Support & Consultant
           </Text>
-        </FadeIn>
+        </Box>
 
-        <FadeIn delay={100}>
+        <Box>
           <Tooltip
             label="Nice, you found one of my easter eggs!"
             opened={showTooltip}
@@ -89,9 +88,9 @@ export function Hero() {
               Ronald Vargas
             </Title>
           </Tooltip>
-        </FadeIn>
+        </Box>
 
-        <FadeIn delay={200}>
+        <Box>
           <Text
             size="xl"
             c="dimmed"
@@ -104,9 +103,9 @@ export function Hero() {
             experience shipping products, troubleshooting systems, and supporting
             teams across software, hardware, accounts, and networks.
           </Text>
-        </FadeIn>
+        </Box>
 
-        <FadeIn delay={300}>
+        <Box>
           <Group justify="center" mt="xl" gap="md">
             <ActionIcon
               component="a"
@@ -134,13 +133,13 @@ export function Hero() {
             </ActionIcon>
             <ContactButton />
           </Group>
-        </FadeIn>
+        </Box>
 
-        <FadeIn delay={400}>
+        <Box>
           <Text size="sm" c="dimmed" mt="xl">
             Scroll down to explore
           </Text>
-        </FadeIn>
+        </Box>
       </Container>
     </Box>
   );

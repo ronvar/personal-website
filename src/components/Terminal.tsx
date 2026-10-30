@@ -136,6 +136,7 @@ const funFacts = [
   "I firmly believe Windows Phone was too ahead for its time.",
   "I have a collection of over 200 Blu Ray movies",
   "I have 3 sphinx cats and 2 of them are dwarves",
+  "I'm usually the person colleagues ping first when something technical breaks.",
 ];
 
 const developerCodeBlocks = [

@@ -22,7 +22,6 @@ import {
   IconCar,
   IconServer,
 } from "@tabler/icons-react";
-import { FadeIn } from "./FadeIn";
 
 const useStyles = createStyles((theme) => ({
   section: {
@@ -58,7 +57,7 @@ export function AboutMe() {
   return (
     <Box component="section" id="about-me" className={classes.section}>
       <Container size="lg">
-        <FadeIn>
+        <Box>
           <Text
             size="sm"
             tt="uppercase"
@@ -72,11 +71,11 @@ export function AboutMe() {
           <Title order={2} size="2.5rem" mb="xl">
             About Me
           </Title>
-        </FadeIn>
+        </Box>
 
         <Stack gap="xl">
           <SimpleGrid cols={{ base: 1, md: 2 }} spacing="lg">
-            <FadeIn delay={100}>
+            <Box>
               <Paper
                 radius="xl"
                 p="xl"
@@ -152,9 +151,9 @@ export function AboutMe() {
                   </Badge>
                 </Group>
               </Paper>
-            </FadeIn>
+            </Box>
 
-            <FadeIn delay={180}>
+            <Box>
               <Paper
                 radius="xl"
                 p="xl"
@@ -236,19 +235,19 @@ export function AboutMe() {
                   </Badge>
                 </Group>
               </Paper>
-            </FadeIn>
+            </Box>
           </SimpleGrid>
 
           <Box>
-            <FadeIn delay={200}>
+            <Box>
               <Title order={3} size="h3" mb="lg" mt="md">
                 Life Offline & DIY
               </Title>
-            </FadeIn>
+            </Box>
 
             <SimpleGrid cols={{ base: 1, md: 3 }} spacing="lg">
               {/* DIY / Home Projects */}
-              <FadeIn delay={300}>
+              <Box>
                 <Paper
                   radius="xl"
                   p="lg"
@@ -277,10 +276,10 @@ export function AboutMe() {
                     cabinets.
                   </Text>
                 </Paper>
-              </FadeIn>
+              </Box>
 
               {/* Automotive */}
-              <FadeIn delay={400}>
+              <Box>
                 <Paper
                   radius="xl"
                   p="lg"
@@ -308,10 +307,10 @@ export function AboutMe() {
                     vehicles myself.
                   </Text>
                 </Paper>
-              </FadeIn>
+              </Box>
 
               {/* Home Lab */}
-              <FadeIn delay={500}>
+              <Box>
                 <Paper
                   radius="xl"
                   p="lg"
@@ -340,7 +339,7 @@ export function AboutMe() {
                     projector, and connectivity faults.
                   </Text>
                 </Paper>
-              </FadeIn>
+              </Box>
             </SimpleGrid>
           </Box>
         </Stack>
