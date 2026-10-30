@@ -1,20 +1,25 @@
 export interface Project {
   title: string;
+  role?: string;
+  // Measured result shown under the title; leave out when there isn't one.
+  outcome?: string;
   description: string;
   tags: string[];
-  gradient: string;
   link?: string;
   coverUrl: string;
   hasModal?: boolean;
   screenshots?: string[];
+  // Supporting projects get a smaller row.
+  compact?: boolean;
 }
 
 export const projects: Project[] = [
   {
     title: 'Handl Health',
-    description: 'Website platform migration for a healthcare startup — coordinating marketing, legal, and engineering with analytics, tag management, and CRM integrations.',
-    tags: ['GA4', 'Google Tag Manager', 'HubSpot', 'GDPR/CCPA'],
-    gradient: 'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)',
+    role: 'Technical consultant',
+    outcome: 'On-schedule migration, plus ~200 data-driven rate pages',
+    description: 'Migrated a healthcare marketing site to React and Vite. Connected analytics, consent-aware CRM forms, and tools the team can maintain.',
+    tags: ['React', 'Vite', 'GA4', 'HubSpot', 'GDPR/CCPA'],
     coverUrl: '/img/handlhealth/homepage.png',
     hasModal: true,
     screenshots: [
@@ -26,9 +31,10 @@ export const projects: Project[] = [
   },
   {
     title: 'BP.fun',
-    description: 'Revolutionary tokenomics platform enabling unique token creation and trading mechanics on the blockchain.',
+    role: 'Full stack engineer',
+    outcome: '>40% frontend performance gain',
+    description: 'Improved a Solana platform’s real-time frontend and built its social identity layer, from authentication to profiles and delegated permissions.',
     tags: ['React', 'Solana', 'TypeScript', 'Web3'],
-    gradient: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
     coverUrl: '/img/bp.fun/trade.png',
     screenshots: [
       "/img/bp.fun/homepage.png",
@@ -39,9 +45,9 @@ export const projects: Project[] = [
   },
   {
     title: 'Dynamic Mathler',
-    description: 'Hardcore math puzzle game inspired by Wordle. Features daily puzzles, progress tracking via Dynamic SDK, and crypto integrations.',
+    description: 'A daily math puzzle in the spirit of Wordle, with progress saved through the Dynamic SDK.',
     tags: ['Next.js', 'Jotai', 'Mantine', 'TypeScript'],
-    gradient: 'linear-gradient(135deg, #FF6B6B 0%, #556270 100%)',
+    compact: true,
     coverUrl: "/img/mathler/intro.png",
     hasModal: true,
     screenshots: [
@@ -52,9 +58,11 @@ export const projects: Project[] = [
   },
   {
     title: 'Bello',
-    description: 'Comprehensive web3 analytics dashboard providing insights into NFT collections and wallet behavior.',
-    tags: ['React', 'Typescript', 'Recharts', 'Blockchain', 'SQL', 'Firestore'],
-    gradient: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
+    role: 'Full stack engineer',
+    outcome: '20% higher retention / 25% page-load performance gain',
+    description: 'Rebuilt the analytics platform with Next.js and PostgreSQL, with personalized workflows and encrypted messaging.',
+    tags: ['React', 'TypeScript', 'Recharts', 'Blockchain', 'SQL', 'Firestore'],
+    compact: true,
     coverUrl: '/img/bello/bello-wallets.png',
     hasModal: true,
     screenshots: [

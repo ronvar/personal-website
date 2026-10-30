@@ -2,43 +2,43 @@
 
 import { createTheme, rem } from '@mantine/core';
 
+// Values mirror the tokens in globals.css; see DESIGN.md.
 export const theme = createTheme({
-  primaryColor: 'blue',
+  primaryColor: 'signal',
+  primaryShade: { light: 6, dark: 4 },
   colors: {
-    blue: [
-      '#e5f4ff',
-      '#cde4ff',
-      '#9ac6ff',
-      '#64a6ff',
-      '#3a8cfe',
-      '#1f7bfe',
-      '#007AFF', // Apple blue
-      '#006adb',
-      '#005cc4',
-      '#004dac',
+    signal: [
+      '#fff3eb',
+      '#ffe2cf',
+      '#fdc29d',
+      '#f9a067',
+      '#f2772e',
+      '#e05d17',
+      '#c2410c', // accent
+      '#a3370a',
+      '#842d09',
+      '#652307',
     ],
   },
-  fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+  fontFamily: 'var(--font-sans)',
+  fontFamilyMonospace: 'var(--font-mono)',
   headings: {
-    fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-    fontWeight: '600',
+    fontFamily: 'var(--font-sans)',
+    fontWeight: '800',
   },
   radius: {
-    xs: rem(4),
-    sm: rem(8),
-    md: rem(12),
-    lg: rem(16),
-    xl: rem(24),
+    xs: rem(2),
+    sm: rem(2),
+    md: rem(2),
+    lg: rem(2),
+    xl: rem(2),
   },
-  defaultRadius: 'md',
+  defaultRadius: 'xs',
   spacing: {
     xs: rem(8),
     sm: rem(12),
     md: rem(16),
     lg: rem(24),
     xl: rem(32),
-  },
-  other: {
-    transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
   },
 });

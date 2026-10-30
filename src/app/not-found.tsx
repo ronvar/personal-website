@@ -1,46 +1,33 @@
-'use client';
-
-import { Box, Title, Text, Button, Container } from '@mantine/core';
-import { IconTool, IconArrowLeft } from '@tabler/icons-react';
 import Link from 'next/link';
 
 export default function NotFound() {
   return (
-    <Box
+    <main
       style={{
         minHeight: '100vh',
         display: 'flex',
         alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: 'var(--background)',
       }}
     >
-      <Container size="sm" ta="center">
-        <IconTool
-          size={80}
-          stroke={1.5}
-          style={{ color: 'var(--apple-blue)', marginBottom: '1rem' }}
-        />
-        <Title order={1} size="4rem" fw={700} mb="md">
-          404
-        </Title>
-        <Title order={2} size="1.5rem" fw={500} c="dimmed" mb="lg">
-          Looks like this page needs some DIY...
-        </Title>
-        <Text c="dimmed" mb="xl">
-          But I haven&apos;t built it yet. Let&apos;s get you back to the homepage.
-        </Text>
-        <Button
-          component={Link}
-          href="/"
-          size="lg"
-          radius="xl"
-          leftSection={<IconArrowLeft size={18} />}
-          variant="light"
-        >
-          Back to Home
-        </Button>
-      </Container>
-    </Box>
+      <div className="wrap" style={{ width: '100%' }}>
+        <div className="section-head" style={{ marginBottom: 32 }}>
+          <p className="label">
+            <strong>404</strong> / not found
+          </p>
+          <h1 className="h2">This page needs some DIY.</h1>
+          <p className="lead">
+            I haven&apos;t built it yet. The rest of the site is still standing.
+          </p>
+        </div>
+        <div className="split">
+          <span aria-hidden="true" />
+          <div className="actions">
+            <Link href="/" className="btn btn-primary">
+              Back to the homepage
+            </Link>
+          </div>
+        </div>
+      </div>
+    </main>
   );
 }

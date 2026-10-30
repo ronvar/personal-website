@@ -1,199 +1,29 @@
 "use client";
 
-import { useCallback } from "react";
-import {
-  Box,
-  Title,
-  Text,
-  Badge,
-  Group,
-  Container,
-  SimpleGrid,
-  Paper,
-  useMantineColorScheme,
-} from "@mantine/core";
-import { createStyles } from "@mantine/emotion";
-
-const useStyles = createStyles(() => ({
-  section: {
-    backgroundColor: "var(--background)",
-  },
-  subtitle: {
-    letterSpacing: "0.1em",
-  },
-  grid: {
-    alignItems: "stretch",
-  },
-  glassCard: {
-    border: "1px solid var(--gray-200)",
-    backdropFilter: "blur(16px) saturate(160%)",
-    WebkitBackdropFilter: "blur(16px) saturate(160%)",
-    boxShadow: "0 24px 48px rgba(0, 0, 0, 0.08)",
-    height: "100%",
-    display: "flex",
-    flexDirection: "column",
-  },
-  badge: {
-    textTransform: "none",
-    fontWeight: 500,
-  },
-}));
-
-const skillCategories = [
-  {
-    title: "Support & Systems",
-    skills: [
-      "Jamf",
-      "macOS / Windows",
-      "Google Workspace",
-      "HubSpot",
-      "Account & access management",
-      "Jira",
-      "Airtable",
-      "Networking",
-    ],
-  },
-  {
-    title: "AI & Automation",
-    skills: [
-      "Claude Code",
-      "Cursor",
-      "Antigravity",
-      "MCP Servers",
-    ],
-  },
-
-  {
-    title: "Frontend",
-    skills: [
-      "React",
-      "Next.js",
-      "TypeScript",
-      "HTML/CSS",
-      "Websockets",
-      "Dynamic.xyz",
-      "ethers.js",
-      "Redux",
-      "Jotai",
-      "MantineUI",
-      "Chart.js",
-    ],
-  },
-  {
-    title: "Backend",
-    skills: [
-      "Node.js",
-      "Python",
-      "C++",
-      "JWT",
-      "Express",
-      "REST APIs",
-      "PostgreSQL",
-      "MongoDB",
-      "Redis",
-      "DB Encryption",
-      "XMTP",
-    ],
-  },
-  {
-    title: "DevOps & Cloud",
-    skills: [
-      "AWS",
-      "S3",
-      "SQS",
-      "SNS",
-      "Docker",
-      "CI/CD",
-      "GitHub Actions",
-      "Cloudflare",
-      "R2",
-      "Firestore",
-    ],
-  },
-  {
-    title: "Tools & Methods",
-    skills: [
-      "Git",
-      "Agile/Scrum",
-      "Vitest",
-      "Playwright",
-      "Figma",
-      "Linear",
-      "Replit",
-      "Datadog",
-      "Sentry",
-      "PagerDuty",
-    ],
-  },
-];
+import { SectionHead } from "./SectionHead";
+import { skillCategories } from "@/data/skills";
 
 export function Skills() {
-  const { classes, cx } = useStyles();
-  const { colorScheme } = useMantineColorScheme();
-  const cardBackgroundColor =
-    colorScheme === "dark"
-      ? "rgba(29, 29, 31, 0.72)"
-      : "rgba(255, 255, 255, 0.72)";
-
-  const renderSkillCategory = useCallback(
-    (category: (typeof skillCategories)[0]) => (
-      <Box key={category.title} style={{ height: "100%" }}>
-        <Paper
-          p="xl"
-          radius="xl"
-          className={classes.glassCard}
-          style={{ backgroundColor: cardBackgroundColor }}
-        >
-          <Text fw={600} size="lg" mb="md">
-            {category.title}
-          </Text>
-          <Group gap="xs">
-            {category.skills.map((skill) => (
-              <Badge
-                key={skill}
-                variant="light"
-                color="blue"
-                size="lg"
-                radius="md"
-                className={classes.badge}
-              >
-                {skill}
-              </Badge>
-            ))}
-          </Group>
-        </Paper>
-      </Box>
-    ),
-    [classes.glassCard, classes.badge, cardBackgroundColor],
-  );
-
   return (
-    <Box component="section" id="skills" className={classes.section}>
-      <Container size="lg">
-        <Box>
-          <Text
-            size="sm"
-            tt="uppercase"
-            fw={600}
-            c="blue"
-            mb="xs"
-            className={classes.subtitle}
-          >
-            Expertise
-          </Text>
-          <Title order={2} size="2.5rem" mb="xl">
-            Skills & Technologies
-          </Title>
-        </Box>
+    <section
+      id="skills"
+      className="section band"
+      aria-labelledby="skills-title"
+    >
+      <div className="wrap">
+        <SectionHead index="04" name="skills" id="skills-title" title="Tools I reach for" />
 
-        <SimpleGrid
-          cols={{ base: 1, sm: 2 }}
-          spacing="xl"
-          className={classes.grid}
-        >
-          {skillCategories.map(renderSkillCategory)}
-        </SimpleGrid>
-      </Container>
-    </Box>
+        <dl className="rows">
+          {skillCategories.map((category) => (
+            <div key={category.title} className="split" style={{ padding: "20px 0" }}>
+              <dt className="label">{category.title}</dt>
+              <dd className="prose" style={{ color: "var(--ink)" }}>
+                {category.skills.join(", ")}
+              </dd>
+            </div>
+          ))}
+        </dl>
+      </div>
+    </section>
   );
 }

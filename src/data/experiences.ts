@@ -93,11 +93,8 @@ export const experiences: ExperienceEntry[] = [
     company: 'Bello.lol',
     role: 'Full Stack Software Engineer',
     period: 'Aug 2023 - May 2024',
-    metrics: [
-      { value: '20%', label: 'Higher retention' },
-      { value: '25%', label: 'Page-load performance gain' },
-      { value: '10K+', label: 'Encrypted messages / month' },
-    ],
+    // Retention and page-load figures are shown on the Bello project instead.
+    metrics: [],
     highlights: [
       {
         title: 'Engineering',

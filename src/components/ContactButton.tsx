@@ -1,46 +1,56 @@
 'use client';
 
-import { FormEvent, useCallback, useEffect, useRef, useState } from 'react';
+import { FormEvent, ReactNode, useCallback, useEffect, useRef, useState } from 'react';
 import {
-  ActionIcon, Alert, Anchor, Box, Button, Group, Loader, Modal, Stack,
-  Text, Textarea, TextInput, ThemeIcon, Title, Tooltip, useComputedColorScheme,
+  Alert, Box, Button, Group, Loader, Modal, Stack,
+  Text, Textarea, TextInput, useComputedColorScheme,
 } from '@mantine/core';
 import { createStyles } from '@mantine/emotion';
-import { IconArrowUpRight, IconCheck, IconMail, IconSend } from '@tabler/icons-react';
 import { useDevMode } from './DevModeContext';
 import { TurnstileWidget } from './TurnstileWidget';
 
 const LINKEDIN_URL = 'https://linkedin.com/in/rvar';
 
-const useStyles = createStyles((_, { devMode }: { devMode: boolean }) => ({
+const useStyles = createStyles(() => ({
   content: {
     minHeight: 'auto',
     padding: 0,
-    backgroundColor: devMode ? '#0a0a0a' : 'var(--background)',
-    border: `1px solid ${devMode ? 'rgba(0, 255, 0, 0.25)' : 'var(--gray-200)'}`,
-    boxShadow: '0 32px 80px rgba(0, 0, 0, 0.2)',
+    backgroundColor: 'var(--paper)',
+    border: '1px solid var(--rule-strong)',
+    borderRadius: 'var(--radius)',
   },
   header: {
-    backgroundColor: devMode ? '#0a0a0a' : 'var(--background)',
+    backgroundColor: 'var(--paper)',
+    borderBottom: '1px solid var(--rule)',
+    marginBottom: 24,
   },
   title: {
-    color: devMode ? '#00ff00' : 'var(--foreground)',
-    fontSize: '1.8rem',
-    fontWeight: 600,
-    letterSpacing: '-0.04em',
+    color: 'var(--ink)',
+    fontSize: '1.75rem',
+    fontWeight: 800,
+    fontStretch: '125%',
+    letterSpacing: '-0.02em',
+    lineHeight: 1.1,
+  },
+  close: {
+    color: 'var(--ink)',
   },
   input: {
-    backgroundColor: devMode ? '#0d1a0d' : 'var(--gray-100)',
-    borderColor: devMode ? '#1a2f1a' : 'var(--gray-200)',
-    color: devMode ? '#00ff00' : 'var(--foreground)',
+    backgroundColor: 'var(--paper-2)',
+    borderColor: 'var(--rule)',
+    borderRadius: 'var(--radius)',
+    color: 'var(--ink)',
+    fontFamily: 'var(--font-sans)',
     fontSize: 16,
     '&:focus': {
-      borderColor: devMode ? '#00ff00' : 'var(--apple-blue)',
+      borderColor: 'var(--accent)',
     },
   },
   label: {
-    color: devMode ? '#00ff00' : 'var(--foreground)',
-    fontWeight: 500,
+    color: 'var(--ink-3)',
+    fontFamily: 'var(--font-mono)',
+    fontSize: '0.8125rem',
+    fontWeight: 400,
     marginBottom: 6,
   },
   honeypot: {
@@ -52,6 +62,14 @@ const useStyles = createStyles((_, { devMode }: { devMode: boolean }) => ({
   },
 }));
 
+// Mantine Button themed to the primary button tokens, so it keeps its loading state.
+const submitStyle = {
+  '--button-bg': 'var(--accent)',
+  '--button-hover': 'var(--accent)',
+  '--button-color': 'var(--accent-ink)',
+  height: 48,
+} as React.CSSProperties;
+
 interface ContactFormProps {
   devMode: boolean;
   onClose: () => void;
@@ -59,7 +77,7 @@ interface ContactFormProps {
 }
 
 function ContactForm({ devMode, onClose, onBusyChange }: ContactFormProps) {
-  const { classes } = useStyles({ devMode });
+  const { classes } = useStyles();
   const colorScheme = useComputedColorScheme('light');
   const [config, setConfig] = useState<{ available: boolean; siteKey: string | null } | null>(null);
   const [token, setToken] = useState('');
@@ -69,7 +87,7 @@ function ContactForm({ devMode, onClose, onBusyChange }: ContactFormProps) {
   const [sending, setSending] = useState(false);
   const [sent, setSent] = useState(false);
   const sendingRef = useRef(false);
-  const hintColor = devMode ? 'rgba(0, 255, 0, 0.7)' : 'dimmed';
+  const hintColor = 'var(--ink-2)';
 
   useEffect(() => {
     const controller = new AbortController();
@@ -147,19 +165,15 @@ function ContactForm({ devMode, onClose, onBusyChange }: ContactFormProps) {
 
   if (sent) {
     return (
-      <Stack align="center" gap="lg" py="xl" role="status">
-        <ThemeIcon size={64} radius="xl" variant="light" color={devMode ? 'green' : 'blue'}>
-          <IconCheck size={30} stroke={1.5} />
-        </ThemeIcon>
-        <Box ta="center">
-          <Title order={3} size="xl" c={devMode ? '#00ff00' : 'var(--foreground)'} mb="xs">
-            Thanks for reaching out.
-          </Title>
+      <Stack align="flex-start" gap="lg" pb="md" role="status">
+        <p className="label" style={{ color: 'var(--success)' }}>✓ message sent</p>
+        <Box>
+          <h3 className="h3" style={{ marginBottom: 8 }}>Thanks for reaching out.</h3>
           <Text c={hintColor}>Your message is on its way. I&apos;ll reply by email.</Text>
         </Box>
-        <Button radius="xl" variant="light" color={devMode ? 'green' : 'blue'} onClick={onClose}>
-          Back to exploring
-        </Button>
+        <button type="button" className="btn btn-secondary" onClick={onClose}>
+          Back to the site
+        </button>
       </Stack>
     );
   }
@@ -173,17 +187,17 @@ function ContactForm({ devMode, onClose, onBusyChange }: ContactFormProps) {
         <TextInput
           name="name" label="Your name" placeholder="Alex Taylor" required
           minLength={2} maxLength={80} autoComplete="name" data-autofocus
-          radius="md" size="md" disabled={sending}
+          size="md" disabled={sending}
           classNames={{ input: classes.input, label: classes.label }}
         />
         <TextInput
           name="email" type="email" label="Your email" placeholder="alex@example.com" required
-          maxLength={254} autoComplete="email" radius="md" size="md" disabled={sending}
+          maxLength={254} autoComplete="email" size="md" disabled={sending}
           classNames={{ input: classes.input, label: classes.label }}
         />
         <Textarea
           name="message" label="Your message" placeholder="Tell me a little about what you have in mind..."
-          required minLength={10} maxLength={4000} rows={4} radius="md" size="md" disabled={sending}
+          required minLength={10} maxLength={4000} rows={4} size="md" disabled={sending}
           classNames={{ input: classes.input, label: classes.label }}
         />
         <Box className={classes.honeypot} aria-hidden="true">
@@ -193,7 +207,7 @@ function ContactForm({ devMode, onClose, onBusyChange }: ContactFormProps) {
 
         {!config && (
           <Group gap="xs" role="status">
-            <Loader size="xs" />
+            <Loader size="xs" color="var(--accent)" />
             <Text size="xs" c={hintColor}>Getting the form ready...</Text>
           </Group>
         )}
@@ -209,65 +223,71 @@ function ContactForm({ devMode, onClose, onBusyChange }: ContactFormProps) {
         {verificationError && (
           <Stack gap="xs" role="alert">
             <Text size="sm" c={hintColor}>Verification couldn&apos;t finish. Please try again.</Text>
-            <Button variant="subtle" size="xs" onClick={retryVerification} style={{ alignSelf: 'flex-start' }}>
+            <button type="button" className="link mono" onClick={retryVerification} style={{ alignSelf: 'flex-start' }}>
               Retry verification
-            </Button>
+            </button>
           </Stack>
         )}
         {config && !config.available && (
-          <Alert color={devMode ? 'green' : 'blue'} radius="md">
+          <Alert color="gray" variant="outline" styles={{ message: { color: 'var(--ink)' } }}>
             Messaging is temporarily unavailable. You can still{' '}
-            <Anchor href={LINKEDIN_URL} target="_blank" rel="noopener noreferrer" fw={500}>
+            <a className="link" href={LINKEDIN_URL} target="_blank" rel="noopener noreferrer">
               reach me on LinkedIn
-            </Anchor>.
+            </a>.
           </Alert>
         )}
-        {error && <Alert color="red" radius="md" role="alert">{error}</Alert>}
+        {error && (
+          <Alert color="red" variant="outline" role="alert" styles={{ message: { color: 'var(--danger)' } }}>
+            {error}
+          </Alert>
+        )}
 
         <Button
-          type="submit" fullWidth size="md" radius="xl" loading={sending}
+          type="submit" fullWidth loading={sending}
           disabled={!config?.available || !token || verificationError}
-          rightSection={<IconSend size={18} stroke={1.5} />}
-          color={devMode ? 'green' : 'blue'}
+          className="btn" style={submitStyle}
         >
           Send message
         </Button>
         <Group justify="space-between" gap="xs">
-          <Text size="xs" c={hintColor}>Your email is only used to reply.</Text>
-          <Anchor href={LINKEDIN_URL} target="_blank" rel="noopener noreferrer" size="xs">
-            <Group gap={3} wrap="nowrap">LinkedIn <IconArrowUpRight size={12} /></Group>
-          </Anchor>
+          <span className="tags">Your email is only used to reply.</span>
+          <a className="link tags" href={LINKEDIN_URL} target="_blank" rel="noopener noreferrer">
+            LinkedIn ↗
+          </a>
         </Group>
       </Stack>
     </Box>
   );
 }
 
-export function ContactButton() {
+interface ContactButtonProps {
+  className?: string;
+  children: ReactNode;
+}
+
+export function ContactButton({ className, children }: ContactButtonProps) {
   const [opened, setOpened] = useState(false);
   const [busy, setBusy] = useState(false);
   const { devMode } = useDevMode();
-  const { classes } = useStyles({ devMode });
+  const { classes } = useStyles();
   const close = () => { if (!busy) setOpened(false); };
 
   return (
     <>
-      <Tooltip label="Contact me" withArrow>
-        <ActionIcon
-          variant="subtle" size="xl" radius="xl" aria-label="Contact me"
-          aria-haspopup="dialog" onClick={() => setOpened(true)}
-        >
-          <IconMail size={24} />
-        </ActionIcon>
-      </Tooltip>
+      <button
+        type="button" className={className}
+        aria-haspopup="dialog" onClick={() => setOpened(true)}
+      >
+        {children}
+      </button>
       <Modal
-        opened={opened} onClose={close} centered size={480} padding="xl" radius="xl"
+        opened={opened} onClose={close} centered size={520} padding="xl"
         title="Let's talk." zIndex={2000}
-        classNames={{ content: classes.content, header: classes.header, title: classes.title }}
+        classNames={{ content: classes.content, header: classes.header, title: classes.title, close: classes.close }}
         closeButtonProps={{ 'aria-label': 'Close contact form', disabled: busy }}
         closeOnEscape={!busy} closeOnClickOutside={!busy}
-        overlayProps={{ backgroundOpacity: 0.25, blur: 8 }}
-        transitionProps={{ transition: 'fade', duration: 180 }}
+        overlayProps={{ backgroundOpacity: 0.45, color: '#000' }}
+        transitionProps={{ transition: 'fade', duration: 150 }}
       >
         {opened && <ContactForm devMode={devMode} onClose={close} onBusyChange={setBusy} />}
       </Modal>

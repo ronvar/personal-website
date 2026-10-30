@@ -1,128 +1,146 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
-import { Group, Box, UnstyledButton, useMantineColorScheme, ActionIcon, Switch, Text } from '@mantine/core';
-import { useWindowScroll } from '@mantine/hooks';
+import { useMantineColorScheme, Switch } from '@mantine/core';
 import { createStyles } from '@mantine/emotion';
-import { IconSun, IconMoon, IconTerminal2 } from '@tabler/icons-react';
+import { IconSun, IconMoon } from '@tabler/icons-react';
 import { useDevMode } from './DevModeContext';
 
-interface StyleParams {
-  devMode: boolean;
-  isScrolled: boolean;
-  colorScheme: 'light' | 'dark' | 'auto';
-}
-
-const useStyles = createStyles((_, { devMode, isScrolled, colorScheme }: StyleParams) => ({
+const useStyles = createStyles(() => ({
   nav: {
     position: 'fixed',
     top: 0,
     left: 0,
     right: 0,
     zIndex: 1000,
-    padding: '12px 24px',
-    transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-    backdropFilter: isScrolled || devMode ? 'blur(7px) saturate(180%)' : 'none',
-    WebkitBackdropFilter: isScrolled || devMode ? 'blur(7px) saturate(180%)' : 'none',
-    backgroundColor: devMode
-      ? 'rgba(0, 20, 0, 0.9)'
-      : isScrolled
-        ? colorScheme === 'dark'
-          ? 'rgba(0, 0, 0, 0.72)'
-          : 'rgba(255, 255, 255, 0.72)'
-        : 'transparent',
-    borderBottom: isScrolled || devMode
-      ? `1px solid ${devMode ? '#00ff00' : 'var(--gray-200)'}`
-      : '1px solid transparent',
+    backgroundColor: 'var(--paper)',
+    borderBottom: '1px solid var(--rule)',
+  },
+  bar: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    gap: 16,
+    height: 'var(--nav-h)',
+  },
+  left: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: 20,
   },
   logo: {
-    fontWeight: 600,
-    fontSize: '1.1rem',
-    color: devMode ? '#00ff00' : 'var(--foreground)',
-    fontFamily: devMode ? 'monospace' : 'inherit',
+    fontFamily: 'var(--font-sans)',
+    fontStretch: '125%',
+    fontWeight: 800,
+    fontSize: '1rem',
+    letterSpacing: '-0.01em',
+    color: 'var(--ink)',
+    whiteSpace: 'nowrap',
   },
-  devToggleGroup: {
-    padding: '4px 10px',
-    borderRadius: '16px',
-    backgroundColor: devMode ? 'rgba(0, 255, 0, 0.1)' : 'transparent',
-    border: devMode ? '1px solid rgba(0, 255, 0, 0.3)' : '1px solid transparent',
-    transition: 'all 0.2s ease',
-  },
-  devIcon: {
-    color: devMode ? '#00ff00' : 'var(--gray-400)',
-    transition: 'color 0.2s ease',
+  devToggle: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: 8,
+    color: 'var(--ink-3)',
+    cursor: 'pointer',
   },
   devLabel: {
-    color: devMode ? '#00ff00' : 'var(--gray-500)',
-    fontFamily: 'monospace',
-    transition: 'color 0.2s ease',
+    '@media (max-width: 479px)': {
+      display: 'none',
+    },
   },
-  navItem: {
-    padding: '8px 16px',
-    borderRadius: '20px',
-    fontSize: '0.9rem',
-    fontWeight: 500,
-    fontFamily: devMode ? 'monospace' : 'inherit',
-    transition: 'all 0.2s ease',
+  right: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: 24,
   },
-  navItemActive: {
-    color: devMode ? '#00ff00' : 'var(--apple-blue)',
-    backgroundColor: devMode
-      ? 'rgba(0, 255, 0, 0.15)'
-      : colorScheme === 'dark'
-        ? 'rgba(0, 122, 255, 0.15)'
-        : 'rgba(0, 122, 255, 0.1)',
+  links: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: 24,
+    listStyle: 'none',
   },
-  navItemInactive: {
-    color: devMode ? 'rgba(0, 255, 0, 0.6)' : 'var(--foreground)',
-    backgroundColor: 'transparent',
+  desktopLinks: {
+    '@media (max-width: 767px)': {
+      display: 'none',
+    },
   },
-  colorSchemeToggle: {
-    marginLeft: '8px',
-    color: devMode ? '#00ff00' : undefined,
+  mobileLinks: {
+    display: 'none',
+    '@media (max-width: 767px)': {
+      display: 'flex',
+      flexWrap: 'wrap',
+      justifyContent: 'space-between',
+      gap: '0 12px',
+      padding: '0 0 4px',
+    },
+  },
+  link: {
+    display: 'inline-flex',
+    alignItems: 'center',
+    minHeight: 44,
+    color: 'var(--ink-2)',
+    borderBottom: '2px solid transparent',
+    transition: 'color 0.15s ease, border-color 0.15s ease',
+    '&:hover': {
+      color: 'var(--ink)',
+    },
+  },
+  linkActive: {
+    color: 'var(--ink)',
+    borderBottomColor: 'var(--accent)',
+  },
+  themeToggle: {
+    display: 'inline-flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: 44,
+    height: 44,
+    flexShrink: 0,
+    borderRadius: 'var(--radius)',
+    color: 'var(--ink)',
+    '&:hover': {
+      backgroundColor: 'var(--paper-2)',
+    },
   },
 }));
 
 const navItems = [
-  { label: 'About', href: '#about', devLabel: '/about' },
-  { label: 'About Me', href: '#about-me', devLabel: '/about-me' },
-  { label: 'Skills', href: '#skills', devLabel: '/skills' },
-  { label: 'Work', href: '#work', devLabel: '/work' },
-  { label: 'Experience', href: '#experience', devLabel: '/experience' },
+  { label: 'work', href: '#work', devLabel: '/work' },
+  { label: 'experience', href: '#experience', devLabel: '/experience' },
+  { label: 'about', href: '#about', devLabel: '/about' },
+  { label: 'skills', href: '#skills', devLabel: '/skills' },
+  { label: 'contact', href: '#contact', devLabel: '/contact' },
 ];
 
 export function Navbar() {
-  const [scroll] = useWindowScroll();
-  const [activeSection, setActiveSection] = useState('about');
+  const [activeSection, setActiveSection] = useState('');
   const { colorScheme, setColorScheme } = useMantineColorScheme();
   const { devMode, setDevMode } = useDevMode();
-  const isScrolled = scroll.y > 50;
-
-  const { classes, cx } = useStyles({ devMode, isScrolled, colorScheme });
+  const { classes, cx } = useStyles();
 
   useEffect(() => {
     const handleScroll = () => {
       const sections = navItems.map(item => item.href.substring(1));
-      const scrollPosition = window.scrollY + 100;
+      const scrollPosition = window.scrollY + 120;
+      let current = '';
 
-      for (const section of sections.reverse()) {
+      for (const section of sections) {
         const element = document.getElementById(section);
         if (element && element.offsetTop <= scrollPosition) {
-          setActiveSection(section);
-          break;
+          current = section;
         }
       }
+      // The contact section is short, so treat the bottom of the page as contact.
+      if (window.innerHeight + window.scrollY >= document.body.scrollHeight - 4) {
+        current = 'contact';
+      }
+      setActiveSection(current);
     };
 
-    window.addEventListener('scroll', handleScroll);
+    handleScroll();
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  const handleNavClick = useCallback((href: string) => {
-    const element = document.querySelector(href);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
   }, []);
 
   const handleDevModeChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
@@ -133,98 +151,66 @@ export function Navbar() {
     setColorScheme(colorScheme === 'dark' ? 'light' : 'dark');
   }, [colorScheme, setColorScheme]);
 
+  const renderLinks = (className: string) => (
+    <ul className={cx(classes.links, className)}>
+      {navItems.map((item) => (
+        <li key={item.href}>
+          <a
+            href={item.href}
+            className={cx(
+              'mono',
+              classes.link,
+              activeSection === item.href.substring(1) && classes.linkActive
+            )}
+            aria-current={activeSection === item.href.substring(1) ? 'location' : undefined}
+          >
+            {devMode ? item.devLabel : item.label}
+          </a>
+        </li>
+      ))}
+    </ul>
+  );
+
   return (
-    <Box component="nav" className={classes.nav}>
-      <Box maw={1200} mx="auto">
-        <Group justify="space-between" align="center" mb={0}>
-          <Group gap="md">
-            <UnstyledButton
-              onClick={() => handleNavClick('#about')}
-              className={classes.logo}
-              style={{ position: 'relative' }}
-            >
-              {devMode && (
-                <span style={{ position: 'absolute', right: '100%', marginRight: 2 }}>
-                  &gt;_
-                </span>
-              )}
-              RV
-            </UnstyledButton>
+    <nav className={classes.nav} aria-label="Main">
+      <div className="wrap">
+        <div className={classes.bar}>
+          <div className={classes.left}>
+            <a href="#top" className={classes.logo}>
+              {devMode ? '>_ ronald' : 'Ronald Vargas'}
+            </a>
 
-            {/* Developer Mode Toggle */}
-            <Group gap={6} className={classes.devToggleGroup}>
-              <IconTerminal2 size={16} className={classes.devIcon} />
-              <Text size="xs" fw={500} className={classes.devLabel}>
-                dev mode
-              </Text>
-              <Switch
-                size="xs"
-                checked={devMode}
-                onChange={handleDevModeChange}
-                styles={{
-                  track: {
-                    backgroundColor: devMode ? '#00ff00' : undefined,
-                    borderColor: devMode ? '#00ff00' : undefined,
-                  },
-                  thumb: {
-                    backgroundColor: devMode ? '#000' : undefined,
-                  },
-                }}
-              />
-            </Group>
-          </Group>
+            <Switch
+              size="xs"
+              checked={devMode}
+              onChange={handleDevModeChange}
+              color="var(--accent)"
+              label="dev mode"
+              labelPosition="left"
+              aria-label="Developer mode"
+              classNames={{ root: classes.devToggle, label: cx('mono', classes.devLabel) }}
+              styles={{
+                label: { color: 'var(--ink-3)', paddingInlineEnd: 8 },
+                thumb: { backgroundColor: devMode ? '#000' : undefined },
+              }}
+            />
+          </div>
 
-          <Group gap="xs">
-            {/* Desktop Nav Items */}
-            <Group gap="xs" visibleFrom="sm">
-              {navItems.map((item) => (
-                <UnstyledButton
-                  key={item.href}
-                  onClick={() => handleNavClick(item.href)}
-                  className={cx(
-                    classes.navItem,
-                    activeSection === item.href.substring(1)
-                      ? classes.navItemActive
-                      : classes.navItemInactive
-                  )}
-                >
-                  {devMode ? item.devLabel : item.label}
-                </UnstyledButton>
-              ))}
-            </Group>
-
-            <ActionIcon
-              variant="subtle"
-              size="lg"
-              radius="xl"
+          <div className={classes.right}>
+            {renderLinks(classes.desktopLinks)}
+            <button
+              type="button"
               onClick={handleColorSchemeToggle}
-              aria-label="Toggle color scheme"
-              className={classes.colorSchemeToggle}
+              aria-label={colorScheme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+              className={classes.themeToggle}
             >
-              {colorScheme === 'dark' ? <IconSun size={20} /> : <IconMoon size={20} />}
-            </ActionIcon>
-          </Group>
-        </Group>
+              {colorScheme === 'dark' ? <IconSun size={18} stroke={1.5} /> : <IconMoon size={18} stroke={1.5} />}
+            </button>
+          </div>
+        </div>
 
-        {/* Mobile Nav Items - Second Row */}
-        <Group gap="xs" hiddenFrom="sm" mt="sm" justify="space-between" style={{ overflowX: 'auto', flexWrap: 'nowrap' }}>
-          {navItems.map((item) => (
-            <UnstyledButton
-              key={item.href}
-              onClick={() => handleNavClick(item.href)}
-              className={cx(
-                classes.navItem,
-                activeSection === item.href.substring(1)
-                  ? classes.navItemActive
-                  : classes.navItemInactive
-              )}
-              style={{ flexShrink: 0 }}
-            >
-              {devMode ? item.devLabel : item.label}
-            </UnstyledButton>
-          ))}
-        </Group>
-      </Box>
-    </Box>
+        {renderLinks(classes.mobileLinks)}
+      </div>
+    </nav>
   );
 }

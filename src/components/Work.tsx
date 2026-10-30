@@ -1,18 +1,121 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
-import { Box, Title, Text, Card, Container, Grid, Badge, Group, Modal, ActionIcon } from '@mantine/core';
+import { Modal } from '@mantine/core';
+import { createStyles } from '@mantine/emotion';
 import Image from 'next/image';
-import { IconExternalLink, IconX, IconChevronLeft, IconChevronRight } from '@tabler/icons-react';
+import { IconX, IconChevronLeft, IconChevronRight } from '@tabler/icons-react';
 import { projects, Project } from '../data/projects';
+import { SectionHead } from './SectionHead';
+
+const useStyles = createStyles(() => ({
+  project: {
+    display: 'grid',
+    gridTemplateColumns: 'minmax(0, 1fr) minmax(0, 1fr)',
+    gap: 40,
+    alignItems: 'start',
+    '@media (max-width: 767px)': {
+      gridTemplateColumns: '1fr',
+      gap: 24,
+    },
+  },
+  compact: {
+    gridTemplateColumns: '176px minmax(0, 1fr)',
+    gap: 32,
+    alignItems: 'center',
+    '@media (max-width: 767px)': {
+      gridTemplateColumns: '96px minmax(0, 1fr)',
+      gap: 20,
+      alignItems: 'start',
+    },
+  },
+  compactShot: {
+    '@media (max-width: 767px)': {
+      aspectRatio: '1',
+    },
+  },
+  compactProse: {
+    fontSize: '0.9375rem',
+    '@media (max-width: 767px)': {
+      display: 'none',
+    },
+  },
+  outcome: {
+    color: 'var(--accent)',
+    fontSize: '1rem',
+    fontWeight: 600,
+    lineHeight: 1.5,
+  },
+  shot: {
+    position: 'relative',
+    display: 'block',
+    width: '100%',
+    aspectRatio: '16 / 9',
+    maxWidth: '100%',
+    overflow: 'hidden',
+    backgroundColor: 'var(--paper-2)',
+    border: '1px solid var(--rule)',
+    borderRadius: 'var(--radius)',
+    '& img': {
+      transition: 'transform 0.4s ease',
+    },
+    '&:hover img': {
+      transform: 'scale(1.02)',
+    },
+  },
+  body: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: 12,
+    minWidth: 0,
+  },
+  viewer: {
+    width: '90vw',
+    maxWidth: 960,
+    display: 'flex',
+    flexDirection: 'column',
+    gap: 12,
+  },
+  frame: {
+    position: 'relative',
+    height: '72vh',
+    width: '100%',
+  },
+  controls: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    gap: 8,
+    padding: '6px 8px',
+    backgroundColor: 'var(--paper)',
+    border: '1px solid var(--rule-strong)',
+    borderRadius: 'var(--radius)',
+    color: 'var(--ink)',
+  },
+  control: {
+    display: 'inline-flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: 40,
+    height: 40,
+    borderRadius: 'var(--radius)',
+    '&:hover:not(:disabled)': {
+      backgroundColor: 'var(--paper-2)',
+    },
+    '&:disabled': {
+      opacity: 0.35,
+      cursor: 'default',
+    },
+  },
+}));
 
 export function Work() {
+  const { classes, cx } = useStyles();
   const [modalOpen, setModalOpen] = useState(false);
   const [activeProject, setActiveProject] = useState<Project | null>(null);
   const [slideIndex, setSlideIndex] = useState(0);
-  const [hovered, setHovered] = useState<'prev' | 'next' | 'close' | null>(null);
 
-  const handleProjectClick = (project: Project) => {
+  const openProject = (project: Project) => {
     if (project.hasModal && project.screenshots && project.screenshots.length > 0) {
       setActiveProject(project);
       setSlideIndex(0);
@@ -40,11 +143,10 @@ export function Work() {
     const handler = (e: KeyboardEvent) => {
       if (e.key === 'ArrowLeft') prev();
       if (e.key === 'ArrowRight') next();
-      if (e.key === 'Escape') closeModal();
     };
     window.addEventListener('keydown', handler);
     return () => window.removeEventListener('keydown', handler);
-  }, [modalOpen, prev, next, closeModal]);
+  }, [modalOpen, prev, next]);
 
   useEffect(() => {
     if (!modalOpen) return;
@@ -62,147 +164,84 @@ export function Work() {
     };
   }, [modalOpen]);
 
+  const total = activeProject?.screenshots?.length ?? 0;
+
   return (
-    <Box
-      component="section"
-      id="work"
-      style={{
-        backgroundColor: 'var(--gray-100)',
-      }}
-    >
-      <Container size="lg">
-        <Box>
-          <Text
-            size="sm"
-            tt="uppercase"
-            fw={600}
-            c="blue"
-            mb="xs"
-            style={{ letterSpacing: '0.1em' }}
-          >
-            Portfolio
-          </Text>
-          <Title order={2} size="2.5rem" mb="xl">
-            Featured Work
-          </Title>
-        </Box>
+    <section id="work" className="section" aria-labelledby="work-title">
+      <div className="wrap">
+        <SectionHead index="01" name="work" id="work-title" title="Selected work" />
 
-        <Grid gutter="xl">
+        <ol className="rows">
           {projects.map((project, index) => {
-            const isLast = index === projects.length - 1;
-            const isOddTotal = projects.length % 2 !== 0;
-            const span = (isLast && isOddTotal) ? 12 : 6;
-
-            const cardContent = (
-              <Card
-                padding={0}
-                radius="lg"
-                style={{
-                  height: '100%',
-                  overflow: 'hidden',
-                  border: '1px solid var(--gray-200)',
-                  transition: 'transform 0.3s ease, box-shadow 0.3s ease',
-                  cursor: project.link || project.hasModal ? 'pointer' : 'default',
-                  display: 'flex',
-                  flexDirection: 'column',
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = 'translateY(-4px)';
-                  e.currentTarget.style.boxShadow = '0 20px 40px rgba(0, 0, 0, 0.1)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = 'translateY(0)';
-                  e.currentTarget.style.boxShadow = 'none';
-                }}
-                onClick={() => handleProjectClick(project)}
-              >
-                <Box
-                  style={{
-                    background: project.coverUrl ? 'transparent' : project.gradient,
-                    height: 160,
-                    width: '100%',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    position: 'relative',
-                    overflow: 'hidden',
-                    flexShrink: 0,
-                  }}
-                >
-                  {project.coverUrl && (
-                    <>
-                      <Image
-                        src={project.coverUrl}
-                        alt={project.title}
-                        fill
-                        style={{ objectFit: 'cover' }}
-                      />
-                      <Box
-                        style={{
-                          position: 'absolute',
-                          inset: 0,
-                          background: 'radial-gradient(circle, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.7) 100%)',
-                        }}
-                      />
-                    </>
-                  )}
-                  <Text
-                    size="xl"
-                    fw={700}
-                    c="white"
-                    style={{
-                      textShadow: '0 2px 4px rgba(0,0,0,0.4)',
-                      position: 'relative',
-                      zIndex: 1,
-                    }}
-                  >
-                    {project.title}
-                  </Text>
-                </Box>
-                <Box p="lg" style={{ backgroundColor: 'var(--background)', flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
-                  <Group justify="space-between" mb="xs">
-                    <Text fw={600} size="lg">
-                      {project.title}
-                    </Text>
-                    {project.link && <IconExternalLink size={18} style={{ color: 'var(--gray-400)' }} />}
-                  </Group>
-                  <Text size="sm" c="dimmed" mb="md" style={{ lineHeight: 1.6, flexGrow: 1 }}>
-                    {project.description}
-                  </Text>
-                  <Group gap="xs">
-                    {project.tags.map((tag) => (
-                      <Badge
-                        key={tag}
-                        variant="light"
-                        color="gray"
-                        size="sm"
-                        radius="sm"
-                        style={{ textTransform: 'none' }}
-                      >
-                        {tag}
-                      </Badge>
-                    ))}
-                  </Group>
-                </Box>
-              </Card>
-            );
+            const count = project.screenshots?.length ?? 0;
+            const canOpen = project.hasModal && count > 0;
+            const shotClass = cx(classes.shot, project.compact && classes.compactShot);
 
             return (
-              <Grid.Col key={project.title} span={{ base: 12, sm: span }}>
-                <Box style={{ height: '100%' }}>
-                  {project.link ? (
-                    <a href={project.link} target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none', height: '100%', display: 'block' }}>
-                      {cardContent}
-                    </a>
-                  ) : (
-                    cardContent
-                  )}
-                </Box>
-              </Grid.Col>
+              <li
+                key={project.title}
+                className={cx(classes.project, project.compact && classes.compact)}
+                style={{ paddingBlock: 32 }}
+              >
+                {canOpen ? (
+                  <button
+                    type="button"
+                    className={shotClass}
+                    onClick={() => openProject(project)}
+                    aria-label={`View ${count} screenshots of ${project.title}`}
+                  >
+                    <Image
+                      src={project.coverUrl}
+                      alt=""
+                      fill
+                      sizes="(max-width: 767px) 100vw, 640px"
+                      style={{ objectFit: 'cover', objectPosition: 'top' }}
+                    />
+                  </button>
+                ) : (
+                  <div className={shotClass}>
+                    <Image
+                      src={project.coverUrl}
+                      alt={`${project.title} screenshot`}
+                      fill
+                      sizes="(max-width: 767px) 100vw, 640px"
+                      style={{ objectFit: 'cover', objectPosition: 'top' }}
+                    />
+                  </div>
+                )}
+
+                <div className={classes.body}>
+                  <p className="label">
+                    <strong>{String(index + 1).padStart(2, '0')}</strong>
+                    {project.role && ` / ${project.role.toLowerCase()}`}
+                  </p>
+                  <h3
+                    className="h3"
+                    style={{ fontSize: project.compact ? '1.375rem' : '1.75rem', fontStretch: '115%', fontWeight: 800 }}
+                  >
+                    {project.title}
+                  </h3>
+                  {project.outcome && <p className={classes.outcome}>{project.outcome}</p>}
+                  <p className={cx('prose', project.compact && classes.compactProse)}>{project.description}</p>
+                  <p className="tags">{project.tags.join(' / ')}</p>
+                  <div className="actions">
+                    {canOpen && (
+                      <button type="button" className="link mono quiet-button" onClick={() => openProject(project)}>
+                        View screenshots ({count})
+                      </button>
+                    )}
+                    {project.link && (
+                      <a className="link mono quiet-button" href={project.link} target="_blank" rel="noopener noreferrer">
+                        Visit site ↗
+                      </a>
+                    )}
+                  </div>
+                </div>
+              </li>
             );
           })}
-        </Grid>
-      </Container>
+        </ol>
+      </div>
 
       <Modal
         opened={modalOpen}
@@ -210,116 +249,69 @@ export function Work() {
         withCloseButton={false}
         centered
         lockScroll={false}
-        transitionProps={{ transition: 'fade', duration: 200 }}
+        transitionProps={{ transition: 'fade', duration: 150 }}
         size="auto"
         padding={0}
         zIndex={2000}
-        overlayProps={{
-          color: '#000000',
-          backgroundOpacity: 0.35,
-          blur: 5,
-        }}
+        title={activeProject ? `${activeProject.title} screenshots` : undefined}
+        overlayProps={{ color: '#000', backgroundOpacity: 0.7 }}
         styles={{
-          content: {
-            backgroundColor: 'transparent',
-            boxShadow: 'none',
-            overflow: 'visible',
-          },
-          body: {
-            padding: 0,
-          },
+          content: { backgroundColor: 'transparent', boxShadow: 'none', overflow: 'visible' },
+          header: { display: 'none' },
+          body: { padding: 0 },
         }}
       >
         {activeProject && activeProject.screenshots && (
-          <Box style={{ width: '90vw', maxWidth: '860px', display: 'flex', flexDirection: 'column', gap: 12 }}>
-            {/* Image */}
-            <Box style={{ position: 'relative', height: '72vh', width: '100%', borderRadius: 12, overflow: 'hidden' }}>
+          <div className={classes.viewer}>
+            <div className={classes.frame}>
               <Image
                 src={activeProject.screenshots[slideIndex]}
-                alt={`${activeProject.title} screenshot ${slideIndex + 1}`}
+                alt={`${activeProject.title} screenshot ${slideIndex + 1} of ${total}`}
                 fill
-                style={{ objectFit: 'contain', borderRadius: 12 }}
+                style={{ objectFit: 'contain' }}
                 priority
                 sizes="90vw"
               />
-            </Box>
+            </div>
 
-            {/* Control bar */}
-            <Box
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                backgroundColor: 'rgba(255, 255, 255, 0.4)',
-                backdropFilter: 'blur(20px) saturate(180%)',
-                WebkitBackdropFilter: 'blur(20px) saturate(180%)',
-                borderRadius: 40,
-                padding: '6px 10px',
-                boxShadow: '0 2px 16px rgba(0,0,0,0.10), inset 0 0 0 0.5px rgba(255,255,255,0.6)',
-              }}
-            >
-              <ActionIcon
-                variant="subtle"
-                radius="xl"
-                size="lg"
+            <div className={classes.controls}>
+              <button
+                type="button"
+                className={classes.control}
                 onClick={prev}
-                disabled={activeProject.screenshots.length <= 1}
+                disabled={total <= 1}
                 aria-label="Previous screenshot"
-                onMouseEnter={() => setHovered('prev')}
-                onMouseLeave={() => setHovered(null)}
-                style={{ color: 'rgba(0,0,0,0.75)', backgroundColor: hovered === 'prev' ? 'rgba(255,255,255,0.26)' : 'rgba(255,255,255,0.1)', backdropFilter: 'blur(20px) saturate(180%)', WebkitBackdropFilter: 'blur(20px) saturate(180%)', transition: 'background-color 0.15s ease' }}
               >
-                <IconChevronLeft size={20} />
-              </ActionIcon>
+                <IconChevronLeft size={20} stroke={1.5} />
+              </button>
 
-              <Group gap={6}>
-                {activeProject.screenshots.map((_, i) => (
-                  <Box
-                    key={i}
-                    onClick={() => setSlideIndex(i)}
-                    style={{
-                      width: i === slideIndex ? 20 : 7,
-                      height: 7,
-                      borderRadius: 4,
-                      backgroundColor: i === slideIndex ? 'rgba(0,0,0,0.75)' : 'rgba(0,0,0,0.2)',
-                      cursor: 'pointer',
-                      transition: 'all 0.2s ease',
-                    }}
-                  />
-                ))}
-              </Group>
+              <span className="mono" aria-live="polite">
+                {activeProject.title} · {slideIndex + 1} / {total}
+              </span>
 
-              <Group gap={2}>
-                <ActionIcon
-                  variant="subtle"
-                  radius="xl"
-                  size="lg"
+              <div style={{ display: 'flex', gap: 4 }}>
+                <button
+                  type="button"
+                  className={classes.control}
                   onClick={next}
-                  disabled={activeProject.screenshots.length <= 1}
+                  disabled={total <= 1}
                   aria-label="Next screenshot"
-                  onMouseEnter={() => setHovered('next')}
-                  onMouseLeave={() => setHovered(null)}
-                  style={{ color: 'rgba(0,0,0,0.75)', backgroundColor: hovered === 'next' ? 'rgba(255,255,255,0.26)' : 'rgba(255,255,255,0.1)', backdropFilter: 'blur(20px) saturate(180%)', WebkitBackdropFilter: 'blur(20px) saturate(180%)', transition: 'background-color 0.15s ease' }}
                 >
-                  <IconChevronRight size={20} />
-                </ActionIcon>
-                <ActionIcon
-                  variant="subtle"
-                  radius="xl"
-                  size="lg"
+                  <IconChevronRight size={20} stroke={1.5} />
+                </button>
+                <button
+                  type="button"
+                  className={classes.control}
                   onClick={closeModal}
                   aria-label="Close"
-                  onMouseEnter={() => setHovered('close')}
-                  onMouseLeave={() => setHovered(null)}
-                  style={{ color: 'rgba(180,20,20,1)', backgroundColor: hovered === 'close' ? 'rgba(220,50,50,0.15)' : 'rgba(255,255,255,0.18)', transition: 'background-color 0.15s ease' }}
                 >
-                  <IconX size={18} />
-                </ActionIcon>
-              </Group>
-            </Box>
-          </Box>
+                  <IconX size={18} stroke={1.5} />
+                </button>
+              </div>
+            </div>
+          </div>
         )}
       </Modal>
-    </Box>
+    </section>
   );
 }

@@ -1,29 +1,41 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Archivo, IBM_Plex_Mono } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next"
 import { MantineProviderWrapper, ColorSchemeScript } from "@/components/MantineProviderWrapper";
 import "./globals.css";
 
-const inter = Inter({
+const archivo = Archivo({
   subsets: ["latin"],
   display: "swap",
+  axes: ["wdth"],
+  variable: "--font-archivo",
 });
 
+const plexMono = IBM_Plex_Mono({
+  subsets: ["latin"],
+  weight: ["400", "500"],
+  display: "swap",
+  variable: "--font-plex-mono",
+});
+
+const title = "Ronald Vargas | Software engineer & technical support";
+const description = "Software engineer who builds web products and supports the people and systems behind them: React, TypeScript, Node.js, AWS, and hands-on IT.";
+
 export const metadata: Metadata = {
-  title: "Ronald Vargas | Software Engineer & Technical Support & Consultant",
-  description: "Software engineer and technical support specialist. I build products and help people use them: application issues, hardware, networking, and training.",
+  title,
+  description,
   keywords: ["Software Engineer", "Technical Support", "Consultant", "Full Stack Developer", "React", "Next.js", "TypeScript", "AWS", "End-user Support"],
   authors: [{ name: "Ronald Vargas" }],
   openGraph: {
-    title: "Ronald Vargas | Software Engineer & Technical Support & Consultant",
-    description: "Software engineer who also supports users, colleagues, and systems: React, TypeScript, and hands-on technology support.",
+    title,
+    description,
     type: "website",
     images: ["/img/meta.png"],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Ronald Vargas | Software Engineer & Technical Support & Consultant",
-    description: "Software engineer who also supports users, colleagues, and systems: React, TypeScript, and hands-on technology support.",
+    title,
+    description,
     images: ["/img/meta.png"],
   },
 };
@@ -34,11 +46,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" className={`${archivo.variable} ${plexMono.variable}`} suppressHydrationWarning>
       <head>
         <ColorSchemeScript defaultColorScheme="light" />
       </head>
-      <body className={inter.className}>
+      <body>
         <MantineProviderWrapper>
           <Analytics />
           {children}

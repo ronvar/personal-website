@@ -1,349 +1,80 @@
 "use client";
 
-import {
-  Box,
-  Title,
-  Text,
-  Container,
-  Paper,
-  Badge,
-  Group,
-  SimpleGrid,
-  Stack,
-  useMantineColorScheme,
-  ThemeIcon,
-  rem,
-} from "@mantine/core";
-import { createStyles } from "@mantine/emotion";
-import {
-  IconCode,
-  IconHeadset,
-  IconHammer,
-  IconCar,
-  IconServer,
-} from "@tabler/icons-react";
+import { SectionHead } from "./SectionHead";
 
-const useStyles = createStyles((theme) => ({
-  section: {
-    background:
-      "linear-gradient(180deg, var(--background) 0%, var(--gray-100) 100%)",
+const offline = [
+  {
+    name: "diy",
+    title: "Home renovation",
+    body: "I like getting my hands dirty: routing Ethernet through multiple rooms, replacing windows, and redoing bathrooms and kitchen cabinets.",
   },
-  subtitle: {
-    letterSpacing: "0.1em",
+  {
+    name: "cars",
+    title: "One-man auto shop",
+    body: "I fix and maintain cars myself, for the mechanical puzzle as much as the money it saves.",
   },
-  glassCard: {
-    border: "1px solid var(--gray-200)",
-    backdropFilter: "blur(16px) saturate(160%)",
-    WebkitBackdropFilter: "blur(16px) saturate(160%)",
-    boxShadow: "0 24px 48px rgba(0, 0, 0, 0.08)",
-    height: "100%",
-    display: "flex",
-    flexDirection: "column",
+  {
+    name: "home lab & av",
+    title: "Home lab and theater",
+    body: "A home server, structured Ethernet, routing and wireless, plus a nine-channel theater I designed and calibrated. I also build and repair PCs and chase down display, projector and connectivity faults.",
   },
-  pill: {
-    textTransform: "none",
-    fontWeight: 500,
-  },
-}));
+];
 
 export function AboutMe() {
-  const { classes } = useStyles();
-  const { colorScheme } = useMantineColorScheme();
-  const cardBackgroundColor =
-    colorScheme === "dark"
-      ? "rgba(29, 29, 31, 0.72)"
-      : "rgba(255, 255, 255, 0.72)";
-
   return (
-    <Box component="section" id="about-me" className={classes.section}>
-      <Container size="lg">
-        <Box>
-          <Text
-            size="sm"
-            tt="uppercase"
-            fw={600}
-            c="blue"
-            mb="xs"
-            className={classes.subtitle}
-          >
-            Profile
-          </Text>
-          <Title order={2} size="2.5rem" mb="xl">
-            About Me
-          </Title>
-        </Box>
+    <section id="about" className="section" aria-labelledby="about-title">
+      <div className="wrap">
+        <SectionHead
+          index="03"
+          name="about"
+          id="about-title"
+          title={<>I build it, and I keep it running.</>}
+        />
 
-        <Stack gap="xl">
-          <SimpleGrid cols={{ base: 1, md: 2 }} spacing="lg">
-            <Box>
-              <Paper
-                radius="xl"
-                p="xl"
-                className={classes.glassCard}
-                style={{ backgroundColor: cardBackgroundColor }}
-              >
-                <Group align="flex-start" wrap="nowrap" mb="md">
-                  <ThemeIcon size={48} radius="md" variant="light" color="blue">
-                    <IconCode
-                      style={{ width: rem(28), height: rem(28) }}
-                      stroke={1.5}
-                    />
-                  </ThemeIcon>
-                  <div>
-                    <Title order={3} size="h3" mb="xs">
-                      Engineering
-                    </Title>
-                    <Text c="dimmed" style={{ lineHeight: 1.7 }}>
-                      I strive for{" "}
-                      <Text span c="blue" fw={600}>
-                        simple but effective
-                      </Text>{" "}
-                      user experiences,{" "}
-                      <Text span c="blue" fw={600}>
-                        clear code
-                      </Text>
-                      {", "}
-                      and{" "}
-                      <Text span c="blue" fw={600}>
-                        performance
-                      </Text>{" "}
-                      across the stack. The best software feels effortless and
-                      sits on straightforward, readable logic.
-                    </Text>
-                  </div>
-                </Group>
-                <Group gap="xs" mt="sm">
-                  <Badge
-                    variant="light"
-                    color="blue"
-                    size="lg"
-                    radius="xl"
-                    className={classes.pill}
-                  >
-                    User-Centric
-                  </Badge>
-                  <Badge
-                    variant="light"
-                    color="blue"
-                    size="lg"
-                    radius="xl"
-                    className={classes.pill}
-                  >
-                    Clean Architecture
-                  </Badge>
-                  <Badge
-                    variant="light"
-                    color="blue"
-                    size="lg"
-                    radius="xl"
-                    className={classes.pill}
-                  >
-                    Performance
-                  </Badge>
-                  <Badge
-                    variant="light"
-                    color="blue"
-                    size="lg"
-                    radius="xl"
-                    className={classes.pill}
-                  >
-                    Maintainability
-                  </Badge>
-                </Group>
-              </Paper>
-            </Box>
+        <div className="rows">
+          <div className="split">
+            <p className="label">engineering</p>
+            <div>
+              <p className="prose">
+                I like software that feels effortless to use and sits on plain,
+                readable code. Most of my work has been React, Next.js and
+                TypeScript on the front, Node.js, Postgres and AWS behind it,
+                and a lot of making slow things fast.
+              </p>
+            </div>
+          </div>
 
-            <Box>
-              <Paper
-                radius="xl"
-                p="xl"
-                className={classes.glassCard}
-                style={{ backgroundColor: cardBackgroundColor }}
-              >
-                <Group align="flex-start" wrap="nowrap" mb="md">
-                  <ThemeIcon size={48} radius="md" variant="light" color="teal">
-                    <IconHeadset
-                      style={{ width: rem(28), height: rem(28) }}
-                      stroke={1.5}
-                    />
-                  </ThemeIcon>
-                  <div>
-                    <Title order={3} size="h3" mb="xs">
-                      Technical Support & Consultant
-                    </Title>
-                    <Text c="dimmed" style={{ lineHeight: 1.7 }}>
-                      I am often the{" "}
-                      <Text span c="teal" fw={600}>
-                        first call
-                      </Text>{" "}
-                      when something technical fails: apps, accounts, endpoints,
-                      or networks. I diagnose under time pressure, write docs
-                      people can follow, and train non-technical colleagues so
-                      they can keep going without me. As a technical consultant,
-                      I bring that same approach to a client engagement: troubleshooting analytics, tag management, and
-                      CRM integrations, keeping compliance requirements like
-                      GDPR/CCPA in check, and equipping their non-technical team
-                      to make site updates confidently on their own.
-                    </Text>
-                  </div>
-                </Group>
-                <Group gap="xs" mt="sm">
-                  <Badge
-                    variant="light"
-                    color="teal"
-                    size="lg"
-                    radius="xl"
-                    className={classes.pill}
-                  >
-                    End-User Support
-                  </Badge>
-                  <Badge
-                    variant="light"
-                    color="teal"
-                    size="lg"
-                    radius="xl"
-                    className={classes.pill}
-                  >
-                    Documentation
-                  </Badge>
-                  <Badge
-                    variant="light"
-                    color="teal"
-                    size="lg"
-                    radius="xl"
-                    className={classes.pill}
-                  >
-                    Training
-                  </Badge>
-                  <Badge
-                    variant="light"
-                    color="teal"
-                    size="lg"
-                    radius="xl"
-                    className={classes.pill}
-                  >
-                    Systems & AV
-                  </Badge>
-                  <Badge
-                    variant="light"
-                    color="teal"
-                    size="lg"
-                    radius="xl"
-                    className={classes.pill}
-                  >
-                    Client Consulting
-                  </Badge>
-                </Group>
-              </Paper>
-            </Box>
-          </SimpleGrid>
+          <div className="split">
+            <p className="label">support &amp; consulting</p>
+            <div>
+              <p className="prose">
+                I&apos;m often the first call when something technical fails:
+                apps, accounts, laptops or networks. I diagnose under time
+                pressure, write docs people can follow, and train non-technical
+                colleagues so they can keep going without me.
+              </p>
+              <p className="prose">
+                As a consultant I bring the same approach to clients:
+                troubleshooting analytics, tag management and CRM integrations,
+                keeping GDPR/CCPA requirements in check, and setting up their team
+                to update the site on their own.
+              </p>
+            </div>
+          </div>
+        </div>
 
-          <Box>
-            <Box>
-              <Title order={3} size="h3" mb="lg" mt="md">
-                Life Offline & DIY
-              </Title>
-            </Box>
-
-            <SimpleGrid cols={{ base: 1, md: 3 }} spacing="lg">
-              {/* DIY / Home Projects */}
-              <Box>
-                <Paper
-                  radius="xl"
-                  p="lg"
-                  className={classes.glassCard}
-                  style={{ backgroundColor: cardBackgroundColor }}
-                >
-                  <ThemeIcon
-                    size={40}
-                    radius="xl"
-                    variant="light"
-                    color="teal"
-                    mb="md"
-                  >
-                    <IconHammer
-                      style={{ width: rem(22), height: rem(22) }}
-                      stroke={1.5}
-                    />
-                  </ThemeIcon>
-                  <Text fw={600} size="lg" mb="xs">
-                    DIY-er
-                  </Text>
-                  <Text c="dimmed" size="sm" style={{ lineHeight: 1.6 }}>
-                    I love getting my hands dirty with home renovation. From
-                    routing new ethernet cables through multiple rooms and
-                    replacing windows, to upgrading bathrooms and kitchen
-                    cabinets.
-                  </Text>
-                </Paper>
-              </Box>
-
-              {/* Automotive */}
-              <Box>
-                <Paper
-                  radius="xl"
-                  p="lg"
-                  className={classes.glassCard}
-                  style={{ backgroundColor: cardBackgroundColor }}
-                >
-                  <ThemeIcon
-                    size={40}
-                    radius="xl"
-                    variant="light"
-                    color="red"
-                    mb="md"
-                  >
-                    <IconCar
-                      style={{ width: rem(22), height: rem(22) }}
-                      stroke={1.5}
-                    />
-                  </ThemeIcon>
-                  <Text fw={600} size="lg" mb="xs">
-                    One Man Auto Shop
-                  </Text>
-                  <Text c="dimmed" size="sm" style={{ lineHeight: 1.6 }}>
-                    An enthusiast for working on cars. I enjoy the mechanical
-                    complexity (and cost savings) of fixing and maintaining
-                    vehicles myself.
-                  </Text>
-                </Paper>
-              </Box>
-
-              {/* Home Lab */}
-              <Box>
-                <Paper
-                  radius="xl"
-                  p="lg"
-                  className={classes.glassCard}
-                  style={{ backgroundColor: cardBackgroundColor }}
-                >
-                  <ThemeIcon
-                    size={40}
-                    radius="xl"
-                    variant="light"
-                    color="indigo"
-                    mb="md"
-                  >
-                    <IconServer
-                      style={{ width: rem(22), height: rem(22) }}
-                      stroke={1.5}
-                    />
-                  </ThemeIcon>
-                  <Text fw={600} size="lg" mb="xs">
-                    Home Lab & AV
-                  </Text>
-                  <Text c="dimmed" size="sm" style={{ lineHeight: 1.6 }}>
-                    Home server, structured Ethernet, routing and wireless,
-                    plus a nine-channel theater I designed and calibrated.
-                    I also assemble and repair PCs and chase down display,
-                    projector, and connectivity faults.
-                  </Text>
-                </Paper>
-              </Box>
-            </SimpleGrid>
-          </Box>
-        </Stack>
-      </Container>
-    </Box>
+        <h3 className="label" style={{ margin: "56px 0 0", paddingBottom: 12 }}>
+          off the clock
+        </h3>
+        <ul className="rows">
+          {offline.map((item) => (
+            <li key={item.name} className="split">
+              <p className="h3" style={{ fontSize: "1.125rem" }}>{item.title}</p>
+              <p className="prose small">{item.body}</p>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
   );
 }
