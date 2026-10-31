@@ -29,15 +29,15 @@ export const experiences: ExperienceEntry[] = [
       {
         title: 'Engineering',
         items: [
-          'Led the marketing-site migration to React and Vite, preserving SEO with 301 redirects and delivering the launch on schedule.',
-          'Improved performance through lazy loading and WebP/WebM asset optimization; partnered with marketing and design on reusable components and regression tests.',
+          'Migrated the marketing site to React and Vite with 301 redirects, launching on schedule, then added lazy loading, WebP/WebM assets, and regression-tested components.',
+          'Building about 200 programmatic city-by-procedure rate pages from CSV pricing data, with build-time validation so pages render only verified values.',
+          'Drove SEO and AEO work, including sitemaps, structured data, and an AI-crawler robots.txt policy, informed by competitive content analysis.',
         ],
       },
       {
         title: 'IT & Support',
         items: [
-          'Configured and troubleshot GA4, Google Tag Manager, and HubSpot integrations, including attribution and GDPR/CCPA consent handling.',
-          'Created a Replit guide for layout, design, and reusable components so non-technical staff could update the site independently.',
+          'Set up GA4, Google Tag Manager, and HubSpot with GDPR/CCPA consent, and wrote a Replit guide so non-technical staff can update the site.',
         ],
       },
     ],
